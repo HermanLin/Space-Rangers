@@ -4,8 +4,9 @@ import javax.swing.*;
 
 public class Player {
 
-    private Polygon ship;
     private Color color;
+    private Polygon ship;
+    private Point center; 
 
     Player() {
         int x[] = {400, 410, 400, 390};
@@ -16,4 +17,6 @@ public class Player {
 
     public Polygon getShip() { return ship; }
     public Color getColor() { return color; }
+
+    
 }
