@@ -24,6 +24,8 @@ public class SpaceRangers {
         
         jp = new Universe();
         jf.add(jp);
+
+        jp.repaint();
     }
 
     public static void main(String[] args) {
@@ -33,8 +35,18 @@ public class SpaceRangers {
 
 class Universe extends JPanel {
 
+    Player player1;
+
     Universe() {
         super();
         setBackground(Color.BLACK);
+
+        player1 = new Player();
+    }
+
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.setColor(player1.getColor());
+        g.drawPolygon(player1.getShip());
     }
 }
