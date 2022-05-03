@@ -12,7 +12,7 @@ import javax.swing.*;
 public class SpaceRangers {
 
     private JFrame jf;
-    private JPanel jp;
+    private Universe jp;
 
     SpaceRangers() {
         jf = new JFrame("Space Rangers");
@@ -25,7 +25,15 @@ public class SpaceRangers {
         jp = new Universe();
         jf.add(jp);
 
-        jp.repaint();
+        new Thread() {
+            public void run() {
+                while(true) {
+                    jp.repaint();
+                }
+            }
+        }.start();
+
+        jf.revalidate();
     }
 
     public static void main(String[] args) {
