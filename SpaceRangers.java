@@ -50,6 +50,18 @@ class Universe extends JPanel {
         setBackground(Color.BLACK);
 
         player1 = new Player();
+
+        new Thread() {
+            public void run() {
+                while(true) {
+                    try {
+                        sleep(1000);
+                        player1.computeCentroid(4);
+                        player1.rotateShip(Math.toRadians(-90), 4);
+                    } catch (InterruptedException e) {}
+                }
+            }
+        }.start();
     }
 
     protected void paintComponent(Graphics g) {

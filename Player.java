@@ -4,7 +4,7 @@ import java.awt.geom.*;
 import java.awt.geom.Point2D.Double;
 import javax.swing.*;
 
-public class Player implements KeyListener {
+public class Player {
 
     private Color color;
     private Polygon ship;
@@ -20,7 +20,7 @@ public class Player implements KeyListener {
     Player(int[] xpoints, int[] ypoints) {
         ship = new Polygon(xpoints, ypoints, 4);
         color = Color.WHITE;
-        centroid = computeCentroid(ship, 4);
+        computeCentroid(4);
         tx = new AffineTransform();
 
         System.out.println(centroid);
@@ -29,20 +29,12 @@ public class Player implements KeyListener {
     public Polygon getShip() { return ship; }
     public Color getColor() { return color; }
 
-    public void keyReleased(KeyEvent e) {}
-    public void keyTyped(KeyEvent e) {}
-    public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-
-        }
-    }
-
     /*
         computeCentroid
         - calculates the centroid of the polygon-ship
         - https://en.wikipedia.org/wiki/Centroid#Of_a_polygon
     */
-    private Double computeCentroid(Polygon ship, int vertexCount) {
+    public void computeCentroid(int vertexCount) {
         Double centroid = new Double(0, 0);
         double x0, x1, y0, y1, a, signedArea = 0.0;
 
@@ -61,6 +53,18 @@ public class Player implements KeyListener {
         centroid.x /= (6.0 * signedArea);
         centroid.y /= (6.0 * signedArea);
 
-        return centroid;
+        this.centroid = centroid;
+    }
+
+    public void rotateShip(double rAngle, int vertexCount) {
+        double x, y;
+        for (int i = 0; i < vertexCount; i++) {
+            x = ship.xpoints[i] - centroid.x;
+            y = ship.ypoints[i] - centroid.y;
+            ship.xpoints[i] = (int) (centroid.x + 
+                Math.round(((x * Math.cos(rAngle)) - (y * Math.sin(rAngle)))));
+            ship.ypoints[i] = (int) (centroid.y +
+                Math.round(((x * Math.sin(rAngle)) + (y * Math.cos(rAngle)))));
+        }
     }
 }
