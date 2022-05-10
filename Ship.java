@@ -2,7 +2,7 @@ import java.awt.*;
 import java.awt.geom.*;
 import java.awt.geom.Point2D.Double;
 
-public class Player {
+public class Ship {
 
     private Color color;
     private Polygon ship;
