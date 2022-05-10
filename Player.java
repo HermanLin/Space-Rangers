@@ -1,8 +1,6 @@
 import java.awt.*;
-import java.awt.event.*;
 import java.awt.geom.*;
 import java.awt.geom.Point2D.Double;
-import javax.swing.*;
 
 public class Player {
 
