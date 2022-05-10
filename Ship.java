@@ -40,6 +40,8 @@ public class Ship extends Polygon {
     // Getters 
     public Polygon getShip() { return this; }
     public Color getColor() { return color; }
+    public double getCentroidX() { return centroidx; }
+    public double getCentroidY() { return centroidy; }
 
     /**
     * Calculates the centroid of the Ship that is used

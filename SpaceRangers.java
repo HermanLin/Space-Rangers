@@ -23,7 +23,7 @@ public class SpaceRangers extends JFrame {
         
         jp = new Universe();
         this.add(jp);
-
+/*
         this.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -33,11 +33,12 @@ public class SpaceRangers extends JFrame {
                 }
             }
         });
-
+*/
         new Thread() {
             public void run() {
                 while(true) {
                     jp.repaint();
+                    jp.rotate();
                 }
             }
         }.start();
@@ -53,6 +54,7 @@ public class SpaceRangers extends JFrame {
 class Universe extends JPanel {
 
     Ship spaceship;
+    double angle = 0;
 
     Universe() {
         super();
@@ -60,8 +62,8 @@ class Universe extends JPanel {
 
         spaceship = new Ship();
 
-
-/*        new Thread() {
+/*
+        new Thread() {
             public void run() {
                 while(true) {
                     try {
@@ -75,9 +77,17 @@ class Universe extends JPanel {
 */
     }
 
+    public void rotate() {
+        if (angle >= 360) { angle = 0; }
+        else { angle += 5; }
+    }
+
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.setColor(spaceship.getColor());
-        g.drawPolygon(spaceship.getShip());
+        Graphics2D g2d = (Graphics2D) g;
+
+        g2d.setColor(spaceship.getColor());
+        g2d.rotate(Math.toRadians(angle), spaceship.getCentroidX(), spaceship.getCentroidY());
+        g2d.drawPolygon(spaceship.getShip());
     }
 }
