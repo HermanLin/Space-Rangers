@@ -41,6 +41,9 @@ public class SpaceRangers extends JFrame {
                     universe.spaceship.computeCentroid();
                     universe.spaceship.rotateRight();
                 }
+                if (e.getKeyCode() == KeyEvent.VK_UP) {
+                    universe.spaceship.move();
+                }
             }
         });
 
@@ -86,12 +89,17 @@ class Universe extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
+        g2d.translate(0, 0);
 
-        g2d.translate(0.0, 100.0);
         g2d.setColor(spaceship.getColor());
+        
+        g2d.translate(spaceship.getCenterX(), 
+                      spaceship.getCenterY());
+        
         g2d.rotate(Math.toRadians(spaceship.getFacing()), 
                    spaceship.getCentroidX(), 
                    spaceship.getCentroidY());
+        
         g2d.drawPolygon(spaceship.getShip());
     }
 }

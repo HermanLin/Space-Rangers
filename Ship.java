@@ -12,7 +12,10 @@ import java.awt.geom.Point2D.Double;
 
 public class Ship extends Polygon {
 
-    // Centroid variables for the Ship    
+    // Center variables for the Ship, used in translation
+    private double centerx;
+    private double centery;
+    // Centroid variables for the Ship, used in rotation    
     private double centroidx;
     private double centroidy;
     // The direction the Ship is facing
@@ -25,9 +28,11 @@ public class Ship extends Polygon {
 
     Ship() {
         // default location for a new ship
-        this(new int[] {400, 410, 400, 390}, 
-             new int[] {400, 375, 380, 375},
-             4, Color.WHITE);   
+//        this(new int[] {400, 410, 400, 390}, 
+//             new int[] {400, 375, 380, 375},
+          this(new int[] {0, 10, 0, -10},
+               new int[] {0, -25, -20, -25},   
+               4, Color.WHITE);   
     }
 
     /**
@@ -40,6 +45,10 @@ public class Ship extends Polygon {
         super(xpoints, ypoints, npoints);
         this.color = color; 
         computeCentroid();
+
+        // set default starting position
+        centerx = 400.0;
+        centery = 400.0; 
     }
 
     // Getters and Setters
@@ -47,6 +56,11 @@ public class Ship extends Polygon {
 
     public Color getColor() { return color; }
     public void setColor(Color color) { this.color = color; }
+
+    public double getCenterX() { return centerx; }
+    public double getCenterY() { return centery; }
+    public void setCenterX(double xcoord) { centerx = xcoord; }
+    public void setCenterY(double ycoord) { centery = ycoord; }
 
     public double getCentroidX() { return centroidx; }
     public double getCentroidY() { return centroidy; }
@@ -111,6 +125,7 @@ public class Ship extends Polygon {
     public void rotateRight() {
         if (facing >= 355) { facing = 0; }
         else { facing += 5; }
+//        System.out.println("Ship facing: " + facing);
     }
 
     /**
@@ -119,5 +134,13 @@ public class Ship extends Polygon {
     public void rotateLeft() {
         if (facing <= 0) { facing = 355; }
         else { facing -= 5; }
+//        System.out.println("Ship facing: " + facing);
+    }
+
+    public void move() {
+        double deltaX = 5 * Math.cos(Math.toRadians(facing + 90));
+        double deltaY = 5 * Math.sin(Math.toRadians(facing + 90));
+        centerx += deltaX;
+        centery += deltaY;
     }
 }
