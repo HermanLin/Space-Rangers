@@ -43,13 +43,13 @@ public class SpaceRangers {
 
 class Universe extends JPanel {
 
-    Player player1;
+    Ship player1;
 
     Universe() {
         super();
         setBackground(Color.BLACK);
 
-        player1 = new Player();
+        player1 = new Ship();
 
         new Thread() {
             public void run() {
