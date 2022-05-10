@@ -11,7 +11,7 @@ import javax.swing.*;
 
 public class SpaceRangers extends JFrame {
 
-    private Universe jp;
+    private Universe universe;
 
     SpaceRangers() {
         super("Space Rangers");
@@ -21,25 +21,26 @@ public class SpaceRangers extends JFrame {
         this.setLocationRelativeTo(null);
         this.setVisible(true);
         
-        jp = new Universe();
-        this.add(jp);
-/*
+        universe = new Universe();
+        this.add(universe);
+
         this.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-                    jp.spaceship.computeCentroid();
-                    jp.spaceship.rotateShip(Math.toRadians(5));
+                if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+                    universe.spaceship.computeCentroid();
+                    universe.spaceship.rotateLeft();
+                }
+                if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                    universe.spaceship.computeCentroid();
+                    universe.spaceship.rotateRight();
                 }
             }
         });
-*/
+
         new Thread() {
             public void run() {
-                while(true) {
-                    jp.repaint();
-                    jp.rotate();
-                }
+                while(true) { universe.repaint(); }
             }
         }.start();
 
@@ -54,7 +55,6 @@ public class SpaceRangers extends JFrame {
 class Universe extends JPanel {
 
     Ship spaceship;
-    double angle = 0;
 
     Universe() {
         super();
@@ -77,17 +77,14 @@ class Universe extends JPanel {
 */
     }
 
-    public void rotate() {
-        if (angle >= 360) { angle = 0; }
-        else { angle += 5; }
-    }
-
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
         g2d.setColor(spaceship.getColor());
-        g2d.rotate(Math.toRadians(angle), spaceship.getCentroidX(), spaceship.getCentroidY());
+        g2d.rotate(Math.toRadians(spaceship.getFacing()), 
+                   spaceship.getCentroidX(), 
+                   spaceship.getCentroidY());
         g2d.drawPolygon(spaceship.getShip());
     }
 }

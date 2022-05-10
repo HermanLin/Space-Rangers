@@ -15,6 +15,8 @@ public class Ship extends Polygon {
     // Centroid variables for the Ship    
     private double centroidx;
     private double centroidy;
+    // The direction the Ship is facing
+    private double facing = 0;
     // Describes the color of the ship
     private Color color;
 
@@ -42,6 +44,7 @@ public class Ship extends Polygon {
     public Color getColor() { return color; }
     public double getCentroidX() { return centroidx; }
     public double getCentroidY() { return centroidy; }
+    public double getFacing() { return facing; }
 
     /**
     * Calculates the centroid of the Ship that is used
@@ -85,5 +88,21 @@ public class Ship extends Polygon {
             this.ypoints[i] = (int) (centroidy +
                 Math.round(((x * Math.sin(rAngle)) + (y * Math.cos(rAngle)))));
         }
+    }
+
+    /**
+     * Rotate the Ship by 5 degrees clockwise
+     */
+    public void rotateRight() {
+        if (facing >= 355) { facing = 0; }
+        else { facing += 5; }
+    }
+
+    /**
+     * Rotate the Ship by 5 degrees counter-clockwise
+     */
+    public void rotateLeft() {
+        if (facing <= 0) { facing = 355; }
+        else { facing -= 5; }
     }
 }
