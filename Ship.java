@@ -22,17 +22,18 @@ public class Ship extends Polygon {
         // default location for a new ship
         this(new int[] {400, 410, 400, 390}, 
              new int[] {400, 375, 380, 375},
-             4);   
+             4, Color.WHITE);   
     }
 
     /**
      * @param xpoints x-coordinate points of the Ship
      * @param ypoints y-coordinate points of the Ship
      * @param npoints the number of xy-coordinate pairs
+     * @param color the color of the Ship
      */
-    Ship(int[] xpoints, int[] ypoints, int npoints) {
+    Ship(int[] xpoints, int[] ypoints, int npoints, Color color) {
         super(xpoints, ypoints, npoints);
-        color = Color.WHITE;
+        this.color = color; 
         computeCentroid();
     }
 
