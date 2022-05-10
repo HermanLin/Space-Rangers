@@ -1,18 +1,24 @@
-/*
-    SpaceRangers.java
-    Herman Lin and Devin Zhu
-
-    This class creates the universe that players interact with.
-*/
-
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
+/**
+ * The SpaceRangers class is the driver class for the entire game.
+ * It creates the JFrame that holds all the components as well
+ * as listens to the key inputs from the player.
+ * 
+ * @author Herman Lin
+ * @author Devin Zhu
+ */
 
 public class SpaceRangers extends JFrame {
 
     private Universe universe;
 
+    /**
+     * Constructor for creating the JFrame and initializing the 
+     * JPanel that is responsible for drawing components.
+     */
     SpaceRangers() {
         super("Space Rangers");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
