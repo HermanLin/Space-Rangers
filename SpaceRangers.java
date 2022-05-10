@@ -74,8 +74,8 @@ class Universe extends JPanel {
                 while(true) {
                     try {
                         sleep(1000);
-                        player1.computeCentroid();
-                        player1.rotateShip(Math.toRadians(-90));
+                        spaceship.computeCentroid();
+                        spaceship.rotateShip(Math.toRadians(-90));
                     } catch (InterruptedException e) {}
                 }
             }
@@ -87,6 +87,7 @@ class Universe extends JPanel {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
+        g2d.translate(0.0, 100.0);
         g2d.setColor(spaceship.getColor());
         g2d.rotate(Math.toRadians(spaceship.getFacing()), 
                    spaceship.getCentroidX(), 

@@ -16,7 +16,7 @@ public class Ship extends Polygon {
     private double centroidx;
     private double centroidy;
     // The direction the Ship is facing
-    private double facing = 0; // starts facing up
+    private double facing = 0; // starts facing down
     // Velocity of the ship, starts at 0 in both x/y direction
     private double velocityx = 0;
     private double velocityy = 0;
