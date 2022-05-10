@@ -16,7 +16,10 @@ public class Ship extends Polygon {
     private double centroidx;
     private double centroidy;
     // The direction the Ship is facing
-    private double facing = 0;
+    private double facing = 0; // starts facing up
+    // Velocity of the ship, starts at 0 in both x/y direction
+    private double velocityx = 0;
+    private double velocityy = 0;
     // Describes the color of the ship
     private Color color;
 
@@ -39,12 +42,24 @@ public class Ship extends Polygon {
         computeCentroid();
     }
 
-    // Getters 
+    // Getters and Setters
     public Polygon getShip() { return this; }
+
     public Color getColor() { return color; }
+    public void setColor(Color color) { this.color = color; }
+
     public double getCentroidX() { return centroidx; }
     public double getCentroidY() { return centroidy; }
+    public void setCentroidX(double xcoord) { centroidx = xcoord; }
+    public void setCentroidY(double ycoord) { centroidy = ycoord; }
+    
     public double getFacing() { return facing; }
+    public void setFacing(double dirAngle) { facing = dirAngle; }
+
+    public double getVelocityX() { return velocityx; }
+    public double getVelocityY() { return velocityy; }
+    public void setVelocityX(double velx) { velocityx = velx; }
+    public void setVelocityY(double vely) { velocityy = vely; }
 
     /**
     * Calculates the centroid of the Ship that is used
