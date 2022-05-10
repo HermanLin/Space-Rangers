@@ -1,13 +1,22 @@
 import java.awt.*;
-import java.awt.geom.*;
 import java.awt.geom.Point2D.Double;
 
-public class Ship extends Polygon{
+/**
+ * The Ship class holds data regarding where the player is
+ * located within the Universe and performs any transformations
+ * necessary to move/manipulate the player.
+ *
+ * @author Herman Lin 
+ * @author Devin Zhu
+ */
 
-    private Color color;
+public class Ship extends Polygon {
+
+    // Centroid variables for the Ship    
     private double centroidx;
     private double centroidy;
-    private AffineTransform tx;
+    // Describes the color of the ship
+    private Color color;
 
     Ship() {
         // default location for a new ship
@@ -16,20 +25,26 @@ public class Ship extends Polygon{
              4);   
     }
 
+    /**
+     * @param xpoints x-coordinate points of the Ship
+     * @param ypoints y-coordinate points of the Ship
+     * @param npoints the number of xy-coordinate pairs
+     */
     Ship(int[] xpoints, int[] ypoints, int npoints) {
         super(xpoints, ypoints, npoints);
         color = Color.WHITE;
         computeCentroid();
-        tx = new AffineTransform();
     }
 
+    // Getters 
     public Polygon getShip() { return this; }
     public Color getColor() { return color; }
 
-    /*
-        computeCentroid
-        - calculates the centroid of the polygon-ship
-        - https://en.wikipedia.org/wiki/Centroid#Of_a_polygon
+    /**
+    * Calculates the centroid of the Ship that is used
+    * when rotating the ship.
+    * 
+    * @see https://en.wikipedia.org/wiki/Centroid#Of_a_polygon
     */
     public void computeCentroid() {
         centroidx = 0.0; centroidy = 0.0;
@@ -51,6 +66,12 @@ public class Ship extends Polygon{
         centroidy /= (6.0 * signedArea);
     }
 
+    /**
+     * Rotates the Ship by a certain angle by manipulating
+     * the coordinates of the Ship.
+     * 
+     * @param rAngle rotation angle in radians 
+     */
     public void rotateShip(double rAngle) {
         double x, y;
         for (int i = 0; i < npoints; i++) {
