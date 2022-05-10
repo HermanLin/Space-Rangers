@@ -9,21 +9,30 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class SpaceRangers {
+public class SpaceRangers extends JFrame {
 
-    private JFrame jf;
     private Universe jp;
 
     SpaceRangers() {
-        jf = new JFrame("Space Rangers");
-        jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        jf.setSize(800, 800);
-        jf.setResizable(false);
-        jf.setLocationRelativeTo(null);
-        jf.setVisible(true);
+        super("Space Rangers");
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setSize(800, 800);
+        this.setResizable(false);
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
         
         jp = new Universe();
-        jf.add(jp);
+        this.add(jp);
+
+        this.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                    jp.spaceship.computeCentroid();
+                    jp.spaceship.rotateShip(Math.toRadians(5));
+                }
+            }
+        });
 
         new Thread() {
             public void run() {
@@ -33,7 +42,7 @@ public class SpaceRangers {
             }
         }.start();
 
-        jf.revalidate();
+        this.revalidate();
     }
 
     public static void main(String[] args) {
@@ -43,15 +52,16 @@ public class SpaceRangers {
 
 class Universe extends JPanel {
 
-    Ship player1;
+    Ship spaceship;
 
     Universe() {
         super();
         setBackground(Color.BLACK);
 
-        player1 = new Ship();
+        spaceship = new Ship();
 
-        new Thread() {
+
+/*        new Thread() {
             public void run() {
                 while(true) {
                     try {
@@ -62,11 +72,12 @@ class Universe extends JPanel {
                 }
             }
         }.start();
+*/
     }
 
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.setColor(player1.getColor());
-        g.drawPolygon(player1.getShip());
+        g.setColor(spaceship.getColor());
+        g.drawPolygon(spaceship.getShip());
     }
 }
