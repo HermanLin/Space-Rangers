@@ -56,8 +56,8 @@ class Universe extends JPanel {
                 while(true) {
                     try {
                         sleep(1000);
-                        player1.computeCentroid(4);
-                        player1.rotateShip(Math.toRadians(-90), 4);
+                        player1.computeCentroid();
+                        player1.rotateShip(Math.toRadians(-90));
                     } catch (InterruptedException e) {}
                 }
             }
