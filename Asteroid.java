@@ -50,19 +50,27 @@ class Asteroid extends Polygon {
 
     public Random random = new Random(System.currentTimeMillis());
     // Randomize the type of the default asteroid
-    private int type = random.nextInt(4);
+    private int type;
 
     /**
      * Constructor for creating a default large Asteroid
      */
     Asteroid(ArrayList<Asteroid> asteroids) {
         super();
-        this.xpoints = coordinates[this.type * 2];
-        this.ypoints = coordinates[this.type * 2 + 1]; 
-        this.npoints = nVertex[this.type];
-        this.scale = 3.0;
+        type = random.nextInt(4);
+        System.out.println("Type: " + type);
+        this.xpoints = coordinates[type * 2];
+        this.ypoints = coordinates[type * 2 + 1]; 
+        this.npoints = nVertex[type];
+        scale = 10.0;
+
+        for (int i = 0; i < npoints; i++) { 
+            this.xpoints[i] *= scale; 
+            this.ypoints[i] *= scale;
+        }
+        System.out.println(this);
+
         this.asteroids = asteroids;
-        
         computeCentroid();
     }    
 
@@ -81,9 +89,12 @@ class Asteroid extends Polygon {
      */
     Asteroid(double posX, double posY, double dir, double velX, double velY, 
              int type, double scale, ArrayList<Asteroid> asteroids) {
-        super(coordinates[type * 2], 
-              coordinates[type * 2 + 1], 
-              nVertex[type]);
+        super();
+        type = random.nextInt(4);
+        System.out.println("Type: " + type);
+        this.xpoints = coordinates[type * 2];
+        this.ypoints = coordinates[type * 2 + 1]; 
+        this.npoints = nVertex[type];
         this.scale = scale;
         this.asteroids = asteroids;
 
@@ -148,7 +159,7 @@ class Asteroid extends Polygon {
     /**
      * Randomize the starting location of the Asteroid
      */
-    private void randomLocation() {
+    public void randomLocation() {
         // determine which side of the screen the Asteroid will spawn
         int side = random.nextInt(4);
         if (side == 0) { // top of screen
@@ -164,5 +175,17 @@ class Asteroid extends Polygon {
             positionx = SpaceRangers.SCREEN_WIDTH;
             positiony = random.nextDouble() * SpaceRangers.SCREEN_HEIGHT;
         }
+    }
+
+    /**
+     * Represent the Asteroid through its x/y coordinates
+     */
+    public String toString() {
+        String ret = "X: [ ";
+        for (int x : this.xpoints) { ret += x + " "; }
+        ret += "], Y: [ ";
+        for (int y : this.ypoints) { ret += y + " "; }
+        ret += "]";
+        return ret;
     }
 }
