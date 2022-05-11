@@ -20,7 +20,7 @@ public class Ship extends Polygon {
     private double centroidy;
     // The direction the Ship is facing
     private double facing = 180; // starts facing up
-    private double moveFacing = 180; // same direction as facing
+    private double moveFacing = 270; 
     // Velocity of the ship, starts at 0 in both x/y direction
     private double velocityx = 0;
     private double velocityy = 0;
@@ -110,7 +110,6 @@ public class Ship extends Polygon {
     public void rotateRight() {
         if (facing >= 355) { facing = 0; }
         else { facing += 5; }
-//        System.out.println("Ship facing: " + facing);
     }
 
     /**
@@ -119,13 +118,48 @@ public class Ship extends Polygon {
     public void rotateLeft() {
         if (facing <= 0) { facing = 355; }
         else { facing -= 5; }
-//        System.out.println("Ship facing: " + facing);
     }
 
+    /**
+     * Increase the ship's velocity based on the direction
+     * it is facing. This is multiplied by a base speed of
+     * 0.03 units.
+     */
+    public void increaseVelocity() {
+        moveFacing = facing + 90;
+        velocityx += 0.03 * Math.cos(Math.toRadians(moveFacing));
+        velocityy += 0.03 * Math.sin(Math.toRadians(moveFacing));
+    }
+    /**
+     * Decrease the ship's velocity based on the direction
+     * it is facing. This is multiplied by a base speed of
+     * 0.03 units.
+     */
+    public void decreaseVelocity() {
+        moveFacing = facing + 90;
+        velocityx -= 0.03 * Math.cos(Math.toRadians(moveFacing));
+        velocityy -= 0.03 * Math.sin(Math.toRadians(moveFacing));
+    }
+
+    /**
+     * Move the ship according to it's velocity values.
+     */
     public void move() {
-        double deltaX = 5 * Math.cos(Math.toRadians(facing + 90));
-        double deltaY = 5 * Math.sin(Math.toRadians(facing + 90));
-        centerx += deltaX;
-        centery += deltaY;
+        // Cap the Ship's velocity at 3.0 units per unit of time
+        if (velocityx > 3.0) { velocityx = 3.0; }
+        else if (velocityx < -3.0) { velocityx = -3.0; }
+        if (velocityy > 3.0) { velocityy = 3.0; }
+        else if (velocityy < -3.0) { velocityy = -3.0; }
+
+        // update the Ship's location
+        centerx += velocityx;
+        centery += velocityy;
+
+        // if the Ship goes off screen, 
+        // circle back to the other side
+        if (centerx < 0) { centerx = 800; }
+        else if (centerx > 800) { centerx = 0; }
+        if (centery < 0) { centery = 800; }
+        else if (centery > 800) { centery = 0; }
     }
 }
