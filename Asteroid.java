@@ -21,8 +21,10 @@ class Asteroid extends Polygon {
     // pair of indices represents the x/y coordinates of an
     // asteroid shape
     private static int[][] coordinates = {
-        new int[] {0,1,3,3,1,-1,-3,-3,-1,3,-1}, 
-        new int[] {2,3,1,-1,-3,-3,-1,0,0,2,3},
+        // new int[] {0,1,3,3,1,-1,-3,-3,-1,3,-1}, 
+        // new int[] {2,3,1,-1,-3,-3,-1,0,0,2,3},
+        new int[] {0,1,3,3,1,-1,-3,-3,-1,-1,0}, 
+        new int[] {2,3,1,-1,-3,-3,-1,0,0,3,2},
         new int[] {0,1,3,2,2,-1,-3,-2,-3,-1},
         new int[] {2,3,1,0,-2,-3,-1,0,1,3},
         new int[] {0,2,3,2,2,0,-2,-3,-2,0},
@@ -48,7 +50,7 @@ class Asteroid extends Polygon {
     // Color of the Asteroid
     private Color color = Color.WHITE;
 
-    public Random random = new Random(System.currentTimeMillis());
+    public Random random = new Random();//(System.currentTimeMillis());
     // Randomize the type of the default asteroid
     private int type;
 

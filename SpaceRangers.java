@@ -3,6 +3,7 @@ import java.awt.geom.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * The SpaceRangers class is the driver class for the entire game.
@@ -136,7 +137,7 @@ class Universe extends JPanel {
 
         for (Asteroid a : asteroids) {
             g2d.setTransform(identity);
-            g2d.translate(400, 400);
+            g2d.translate(a.getPositionX(),a.getPositionY());
             g2d.drawPolygon(a);
         }
     }
