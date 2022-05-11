@@ -8,48 +8,58 @@ import java.awt.*;
  * @author Devin Zhu
  */
 
-public class Projectile extends Polygon{
-    //private double damage;
-    private Color color;
+public class Projectile extends Polygon {
+
+    // Data on the Projectile Polygon
     private static int npoints = 4;
-    private static int[] xpoints = {-10,0,0,-10};
-    private static int[] ypoints = {-10,-10,0,0};
+    private static int[] xpoints = {-10,-8,-8,-10};
+    private static int[] ypoints = {-10,-10,-8,-8};
+    // The color of the projectile
+    private Color color;
+    // Position of the projectile
     private double positionx;
     private double positiony;
-    private double velocityx = 5;
-    private double velocityy = 5;
+    // Velocity of the projectile (set speed of 5)
+    private double velocity = 5;
+    // Direction that the projectile moves in
     private double direction;
+    // Boolean for determining when the projectile is offscreen/destroyed
     private boolean alive = true;
 
-
-
+    /**
+     * Constructor for creating a new Projectile
+     * 
+     * @param color the color of the projectile
+     * @param direction the direction the projectile moves
+     * @param posx the starting x-coord of the projectile
+     * @param posy the starting y-coord of the projectile
+     */
     Projectile(Color color, double direction, double posx, double posy) {
         super(xpoints, ypoints, npoints);
         this.color = color;
         this.direction = direction;
-        this.positionx = posx;
-        this.positiony = posy;
+        positionx = posx;
+        positiony = posy;
     }
     
-    public Polygon getProjectile() {return this;}
-    public double getPositionX() {return positionx;}
-    public double getPositionY() {return positiony;}
+    // Getters 
+    public Polygon getProjectile() { return this; }
+    public double getPositionX() { return positionx; }
+    public double getPositionY() { return positiony; }
+    public boolean isAlive() { return alive; }
 
-    // public void setPositionX(double xcord) {positionx = xcord;}
-    // public void setPositionY(double ycord) {positiony = ycord;}
-
-    public boolean isAlive() {return alive;}
-    
-
+    /**
+     * Moves the projectile a specific velocity in a 
+     * specific direction.
+     */
     public void move() {
-        positionx += velocityx * Math.cos(Math.toRadians(direction - 90));
-        positiony += velocityy * Math.sin(Math.toRadians(direction - 90));
-        if (positionx < 0) {alive = false;}
-        else if (positionx > 800) {alive = false;} 
-        if (positiony < 0) {alive = false;}
-        else if (positiony > 800) {alive = false;}
+        positionx += velocity * Math.cos(Math.toRadians(direction + 90));
+        positiony += velocity * Math.sin(Math.toRadians(direction + 90));
 
+        // if the projectile goes off screen, make it unalive
+        if (positionx < 0   || 
+            positionx > 800 || 
+            positiony < 0   || 
+            positiony > 800) { alive = false; }
     }
-    
-    
 }
