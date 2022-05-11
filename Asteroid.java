@@ -12,7 +12,6 @@ import java.util.ArrayList;
  * @author Devin Zhu
  */
 
-
 class Asteroid extends Polygon {
 
     // An ArrayList that contains all the asteroids within the
@@ -35,17 +34,17 @@ class Asteroid extends Polygon {
     private static int[] nVertex = {11,10,10,11};
     // Represents how large the asteroid should be
     private double scale;
-    // Center variables for the Asteroid, used in translation
-    private double centerX;
-    private double centerY;
+    // Position variables for the Asteroid, used in translation
+    private double positionx;
+    private double positiony;
     // Centroid variables for the Asteroid, used in rotation
-    private double centroidX;
-    private double centroidY;
+    private double centroidx;
+    private double centroidy;
     // Direction the Asteroid moves
     private double direction;
     // Velocities of the Asteroid
-    private double velocityX;
-    private double velocityY;
+    private double velocityx;
+    private double velocityy;
     // Color of the Asteroid
     private Color color = Color.WHITE;
 
@@ -55,15 +54,16 @@ class Asteroid extends Polygon {
 
     /**
      * Constructor for creating a default large Asteroid
-     * 
-     * @param type the type of the Asteroid
-     * @param scale the size of the Asteroid
      */
-    Asteroid(int type, double scale) {
-        super(coordinates[type * 2], 
-              coordinates[type * 2 + 1], 
-              nVertex[type]);
-        this.scale = scale;
+    Asteroid(ArrayList<Asteroid> asteroids) {
+        super();
+        this.xpoints = coordinates[this.type * 2];
+        this.ypoints = coordinates[this.type * 2 + 1]; 
+        this.npoints = nVertex[this.type];
+        this.scale = 3.0;
+        this.asteroids = asteroids;
+        
+        computeCentroid();
     }    
 
     /**
@@ -81,11 +81,17 @@ class Asteroid extends Polygon {
      */
     Asteroid(double posX, double posY, double dir, double velX, double velY, 
              int type, double scale, ArrayList<Asteroid> asteroids) {
-        this(type, scale);
-        centerX = posX; centerY = posY;
-        direction = dir; 
-        velocityX = velX; velocityY = velY;
+        super(coordinates[type * 2], 
+              coordinates[type * 2 + 1], 
+              nVertex[type]);
+        this.scale = scale;
         this.asteroids = asteroids;
+
+        positionx = posX; positiony = posY;
+        direction = dir; 
+        velocityx = velX; velocityy = velY;
+
+        computeCentroid();
     }
     
     // Getters and Setters
@@ -95,23 +101,23 @@ class Asteroid extends Polygon {
     public double getScale() { return scale; }
     public void setScale(int newScale) { type = newScale; }
 
-    public double getCenterX() { return centerX; }
-    public double getCenterY() { return centerY; }
-    public void setCenterX(double xcoord) { centerX = xcoord; }
-    public void setCenterY(double ycoord) { centerY = ycoord; }
+    public double getPositionX() { return positionx; }
+    public double getPositionY() { return positiony; }
+    public void setPositionX(double xcoord) { positionx = xcoord; }
+    public void setPositionY(double ycoord) { positiony = ycoord; }
 
-    public double getCentroidX() { return centroidX; }
-    public double getCentroidY() { return centroidY; }
-    public void setCentroidX(double xcoord) { centroidX = xcoord; }
-    public void setCentroidY(double ycoord) { centroidY = ycoord; }
+    public double getCentroidX() { return centroidx; }
+    public double getCentroidY() { return centroidy; }
+    public void setCentroidX(double xcoord) { centroidx = xcoord; }
+    public void setCentroidY(double ycoord) { centroidy = ycoord; }
 
     public double getDirection() { return direction; }
     public void setDirection(double angle) { direction = angle; }
 
-    public double getVelocityX() { return velocityX; }
-    public double getVelocityY() { return velocityY; }
-    public void setVelocityX(double velX) { velocityX = velX; }
-    public void setVelocityY(double velY) { velocityY = velY; }
+    public double getVelocityX() { return velocityx; }
+    public double getVelocityY() { return velocityy; }
+    public void setVelocityX(double velX) { velocityx = velX; }
+    public void setVelocityY(double velY) { velocityy = velY; }
 
     /**
     * Calculates the centroid of the asteroid shape that is used
@@ -120,7 +126,7 @@ class Asteroid extends Polygon {
     * @see https://en.wikipedia.org/wiki/Centroid#Of_a_polygon
     */
     public void computeCentroid() {
-        centroidX = 0.0; centroidY = 0.0;
+        centroidx = 0.0; centroidy = 0.0;
         double x0, x1, y0, y1, a, signedArea = 0.0;
 
         for (int i = 0; i < npoints; i++) {
@@ -130,12 +136,33 @@ class Asteroid extends Polygon {
             y1 = this.ypoints[(i+1) % this.npoints];
             a = x0*y1 - x1*y0;
             signedArea += a;
-            centroidX += (x0 + x1) * a;
-            centroidY += (y0 + y1) * a;
+            centroidx += (x0 + x1) * a;
+            centroidy += (y0 + y1) * a;
         }
 
         signedArea *= 0.5;
-        centroidX /= (6.0 * signedArea);
-        centroidY /= (6.0 * signedArea);
+        centroidx /= (6.0 * signedArea);
+        centroidy /= (6.0 * signedArea);
+    }
+
+    /**
+     * Randomize the starting location of the Asteroid
+     */
+    private void randomLocation() {
+        // determine which side of the screen the Asteroid will spawn
+        int side = random.nextInt(4);
+        if (side == 0) { // top of screen
+            positionx = random.nextDouble() * SpaceRangers.SCREEN_WIDTH;
+            positiony = 0.0; 
+        } else if (side == 1) { // bottom of screen
+            positionx = random.nextDouble() * SpaceRangers.SCREEN_WIDTH;  
+            positiony = SpaceRangers.SCREEN_HEIGHT;
+        } else if (side == 2) { // left of screen
+            positionx = 0.0; 
+            positiony = random.nextDouble() * SpaceRangers.SCREEN_HEIGHT;
+        } else if (side == 3) { // right of screen
+            positionx = SpaceRangers.SCREEN_WIDTH;
+            positiony = random.nextDouble() * SpaceRangers.SCREEN_HEIGHT;
+        }
     }
 }
