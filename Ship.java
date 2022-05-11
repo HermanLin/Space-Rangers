@@ -48,8 +48,8 @@ public class Ship extends Polygon {
         computeCentroid();
 
         // set default starting position
-        centerx = 400.0;
-        centery = 400.0; 
+        centerx = SpaceRangers.SCREEN_WIDTH/2;
+        centery = SpaceRangers.SCREEN_HEIGHT/2; 
     }
 
     // Getters and Setters
@@ -157,9 +157,9 @@ public class Ship extends Polygon {
 
         // if the Ship goes off screen, 
         // circle back to the other side
-        if (centerx < 0) { centerx = 800; }
-        else if (centerx > 800) { centerx = 0; }
-        if (centery < 0) { centery = 800; }
-        else if (centery > 800) { centery = 0; }
+        if (centerx < 0) { centerx = SpaceRangers.SCREEN_WIDTH; }
+        else if (centerx > SpaceRangers.SCREEN_WIDTH) { centerx = 0; }
+        if (centery < 0) { centery = SpaceRangers.SCREEN_HEIGHT; }
+        else if (centery > SpaceRangers.SCREEN_HEIGHT) { centery = 0; }
     }
 }

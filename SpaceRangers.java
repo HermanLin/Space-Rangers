@@ -15,6 +15,8 @@ import java.util.ArrayList;
 
 public class SpaceRangers extends JFrame {
 
+    public static int SCREEN_WIDTH = 800;
+    public static int SCREEN_HEIGHT = 800;
     private Universe universe;
 
     /**
@@ -24,7 +26,7 @@ public class SpaceRangers extends JFrame {
     SpaceRangers() {
         super("Space Rangers");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(800, 800);
+        this.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setVisible(true);

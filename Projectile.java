@@ -58,8 +58,8 @@ public class Projectile extends Polygon {
 
         // if the projectile goes off screen, make it unalive
         if (positionx < 0   || 
-            positionx > 800 || 
+            positionx > SpaceRangers.SCREEN_WIDTH || 
             positiony < 0   || 
-            positiony > 800) { alive = false; }
+            positiony > SpaceRangers.SCREEN_HEIGHT) { alive = false; }
     }
 }
