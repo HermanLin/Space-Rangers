@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.awt.geom.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.ArrayList;
@@ -48,32 +49,28 @@ public class SpaceRangers extends JFrame {
                 if (e.getKeyCode() == KeyEvent.VK_DOWN) {
                     universe.spaceship.decreaseVelocity();
                 }
-
                 if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-                    //System.out.println("Shooting");
-                    
-                    universe.ammunition.add(new Projectile(universe.spaceship.getColor(), universe.spaceship.getFacing(), 
-                                                           universe.spaceship.getShipNoseX(), universe.spaceship.getShipNoseY()));
-                    //System.out.println(universe.ammunition);
-                    
-                    }
-                        
+                    universe.ammunition.add(new Projectile(universe.spaceship.getColor(), 
+                                                        universe.spaceship.getFacing(), 
+                                                        universe.spaceship.getCenterX(), 
+                                                        universe.spaceship.getCenterY()));
                 }
             }
-        );
+        });
 
+        // Thread that continually updates the Universe
         new Thread() {
             public void run() {
                 while(true) { 
                     try {
-                        sleep(10);
+                        sleep(10); // delay for the whole universe, wow!
                     } catch (InterruptedException e) {}
                     universe.repaint(); 
                 }
             }
         }.start();
 
-        this.revalidate();
+        revalidate();
     }
 
     public static void main(String[] args) {
@@ -89,55 +86,38 @@ class Universe extends JPanel {
     Universe() {
         super();
         setBackground(Color.BLACK);
-
         spaceship = new Ship();
-
-/*
-        new Thread() {
-            public void run() {
-                while(true) {
-                    try {
-                        sleep(1000);
-                        spaceship.computeCentroid();
-                        spaceship.rotateShip(Math.toRadians(-90));
-                    } catch (InterruptedException e) {}
-                }
-            }
-        }.start();
-*/
     }
 
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        g2d.translate(0, 0);
+        // Identity transformation matrix for resetting g2d
+        AffineTransform id = new AffineTransform();
 
+        // reset the graphics
+        g2d.setTransform(id);
+        // set the color to the color of the spaceship
         g2d.setColor(spaceship.getColor());
-
+        // move the spaceship
         spaceship.move();
-        
+        // move the graphics to the ship's relative location
         g2d.translate(spaceship.getCenterX(), 
                       spaceship.getCenterY());
-        
+        // update the ship's heading
         g2d.rotate(Math.toRadians(spaceship.getFacing()), 
                    spaceship.getCentroidX(), 
                    spaceship.getCentroidY());
-        
+        // draw the ship
         g2d.drawPolygon(spaceship.getShip());
 
-        for (Projectile p: ammunition) {
-            p.move();
-            if (p.isAlive() == true) {
-                //ammunition.remove(p); 
-            
-                g2d.translate(0,0);
-                g2d.translate(p.getPositionX(), 
-                              p.getPositionY());
+        for (Projectile p : ammunition) {
+            p.move(); // first move the projectile
+            if (p.isAlive()) { // if the projectile is still alive/on-screen
+                g2d.setTransform(id); 
+                g2d.translate(p.getPositionX(), p.getPositionY()); 
                 g2d.drawPolygon(p.getProjectile());
-                System.out.println("Projectile: " + p);
-                System.out.println("pos x: " + p.getPositionX() + " pos y: " + p.getPositionY());
-            }
+            } 
         }
-
     }
 }
