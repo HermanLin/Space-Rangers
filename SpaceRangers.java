@@ -84,22 +84,33 @@ public class SpaceRangers extends JFrame {
 class Universe extends JPanel {
 
     Ship spaceship;
-    ArrayList<Projectile> ammunition = new ArrayList<Projectile>();
+    ArrayList<Projectile> ammunition;
+    ArrayList<Asteroid> asteroids;
+    int numAsteroids = 5;
 
     Universe() {
         super();
         setBackground(Color.BLACK);
         spaceship = new Ship();
+
+        ammunition = new ArrayList<Projectile>();
+        asteroids = new ArrayList<Asteroid>(numAsteroids);
+
+        for (int i = 0; i < numAsteroids; i++) {
+            Asteroid newAsteroid = new Asteroid(asteroids);
+            newAsteroid.randomLocation();
+            asteroids.add(newAsteroid);
+        }
     }
 
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         // Identity transformation matrix for resetting g2d
-        AffineTransform id = new AffineTransform();
+        AffineTransform identity = new AffineTransform();
 
         // reset the graphics
-        g2d.setTransform(id);
+        g2d.setTransform(identity);
         // set the color to the color of the spaceship
         g2d.setColor(spaceship.getColor());
         // move the spaceship
@@ -117,10 +128,16 @@ class Universe extends JPanel {
         for (Projectile p : ammunition) {
             p.move(); // first move the projectile
             if (p.isAlive()) { // if the projectile is still alive/on-screen
-                g2d.setTransform(id); 
+                g2d.setTransform(identity); 
                 g2d.translate(p.getPositionX(), p.getPositionY()); 
-                g2d.drawPolygon(p.getProjectile());
+                g2d.drawPolygon(p);
             } 
+        }
+
+        for (Asteroid a : asteroids) {
+            g2d.setTransform(identity);
+            g2d.translate(400, 400);
+            g2d.drawPolygon(a);
         }
     }
 }
