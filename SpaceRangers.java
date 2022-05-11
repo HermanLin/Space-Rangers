@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.util.ArrayList;
 
 /**
  * The SpaceRangers class is the driver class for the entire game.
@@ -47,8 +48,19 @@ public class SpaceRangers extends JFrame {
                 if (e.getKeyCode() == KeyEvent.VK_DOWN) {
                     universe.spaceship.decreaseVelocity();
                 }
+
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                    //System.out.println("Shooting");
+                    
+                    universe.ammunition.add(new Projectile(universe.spaceship.getColor(), universe.spaceship.getFacing(), 
+                                                           universe.spaceship.getShipNoseX(), universe.spaceship.getShipNoseY()));
+                    //System.out.println(universe.ammunition);
+                    
+                    }
+                        
+                }
             }
-        });
+        );
 
         new Thread() {
             public void run() {
@@ -72,6 +84,7 @@ public class SpaceRangers extends JFrame {
 class Universe extends JPanel {
 
     Ship spaceship;
+    ArrayList<Projectile> ammunition = new ArrayList<Projectile>();
 
     Universe() {
         super();
@@ -111,5 +124,20 @@ class Universe extends JPanel {
                    spaceship.getCentroidY());
         
         g2d.drawPolygon(spaceship.getShip());
+
+        for (Projectile p: ammunition) {
+            p.move();
+            if (p.isAlive() == true) {
+                //ammunition.remove(p); 
+            
+                g2d.translate(0,0);
+                g2d.translate(p.getPositionX(), 
+                              p.getPositionY());
+                g2d.drawPolygon(p.getProjectile());
+                System.out.println("Projectile: " + p);
+                System.out.println("pos x: " + p.getPositionX() + " pos y: " + p.getPositionY());
+            }
+        }
+
     }
 }
