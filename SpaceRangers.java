@@ -105,8 +105,8 @@ class Universe extends JPanel {
         // move the spaceship
         spaceship.move();
         // move the graphics to the ship's relative location
-        g2d.translate(spaceship.getCenterX(), 
-                      spaceship.getCenterY());
+        g2d.translate(spaceship.getPositionX(), 
+                      spaceship.getPositionY());
         // update the ship's heading
         g2d.rotate(Math.toRadians(spaceship.getFacing()), 
                    spaceship.getCentroidX(), 
