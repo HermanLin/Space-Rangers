@@ -15,9 +15,11 @@ public class Ship extends Polygon {
     // Center variables for the Ship, used in translation
     private double centerx;
     private double centery;
-    // Centroid variables for the Ship, used in rotation    
+    // Centroid variables for the Ship, used in rotation and positioning   
     private double centroidx;
     private double centroidy;
+    private double t_centroidx;
+    private double t_centroidy;
     // The direction the Ship is facing
     private double facing = 180; // starts facing up
     private double moveFacing = 270; 
@@ -46,6 +48,7 @@ public class Ship extends Polygon {
         super(xpoints, ypoints, npoints);
         this.color = color; 
         computeCentroid();
+        computeTranslatedCentroid();
 
         // set default starting position
         centerx = SpaceRangers.SCREEN_WIDTH/2;
@@ -65,8 +68,12 @@ public class Ship extends Polygon {
 
     public double getCentroidX() { return centroidx; }
     public double getCentroidY() { return centroidy; }
+    public double getTranslatedCentroidX() { return t_centroidx; }
+    public double getTranslatedCentroidY() { return t_centroidy; }
     public void setCentroidX(double xcoord) { centroidx = xcoord; }
     public void setCentroidY(double ycoord) { centroidy = ycoord; }
+    public void setTranslatedCentroidX(double xcoord) { t_centroidx = xcoord; }
+    public void setTranslatedCentroidY(double ycoord) { t_centroidy = ycoord; }
     
     public double getFacing() { return facing; }
     public void setFacing(double dirAngle) { facing = dirAngle; }
@@ -102,6 +109,15 @@ public class Ship extends Polygon {
         signedArea *= 0.5;
         centroidx /= (6.0 * signedArea);
         centroidy /= (6.0 * signedArea);
+    }
+
+    /**
+     * Calculate the centroid of the ship relative to the ship's
+     * translated location
+     */
+    public void computeTranslatedCentroid() {
+        t_centroidx = centroidx + centerx;
+        t_centroidy = centroidy + centery;
     }
 
     /**

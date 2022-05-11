@@ -38,11 +38,11 @@ public class SpaceRangers extends JFrame {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                    universe.spaceship.computeCentroid();
+                    //universe.spaceship.computeCentroid();
                     universe.spaceship.rotateLeft();
                 }
                 if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                    universe.spaceship.computeCentroid();
+                    //universe.spaceship.computeCentroid();
                     universe.spaceship.rotateRight();
                 }
                 if (e.getKeyCode() == KeyEvent.VK_UP) {
@@ -52,10 +52,11 @@ public class SpaceRangers extends JFrame {
                     universe.spaceship.decreaseVelocity();
                 }
                 if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                    universe.spaceship.computeTranslatedCentroid();
                     universe.ammunition.add(new Projectile(universe.spaceship.getColor(), 
-                                                        universe.spaceship.getFacing(), 
-                                                        universe.spaceship.getCenterX(), 
-                                                        universe.spaceship.getCenterY()));
+                                                           universe.spaceship.getFacing(), 
+                                                           universe.spaceship.getTranslatedCentroidX(), 
+                                                           universe.spaceship.getTranslatedCentroidY()));
                 }
             }
         });
