@@ -19,7 +19,8 @@ public class Ship extends Polygon {
     private double centroidx;
     private double centroidy;
     // The direction the Ship is facing
-    private double facing = 0; // starts facing down
+    private double facing = 180; // starts facing up
+    private double moveFacing = 180; // same direction as facing
     // Velocity of the ship, starts at 0 in both x/y direction
     private double velocityx = 0;
     private double velocityy = 0;
@@ -69,6 +70,8 @@ public class Ship extends Polygon {
     
     public double getFacing() { return facing; }
     public void setFacing(double dirAngle) { facing = dirAngle; }
+    public double getMoveFacing() { return moveFacing; }
+    public void setMoveFacing(double dirAngle) { moveFacing = dirAngle; }
 
     public double getVelocityX() { return velocityx; }
     public double getVelocityY() { return velocityy; }
@@ -99,24 +102,6 @@ public class Ship extends Polygon {
         signedArea *= 0.5;
         centroidx /= (6.0 * signedArea);
         centroidy /= (6.0 * signedArea);
-    }
-
-    /**
-     * Rotates the Ship by a certain angle by manipulating
-     * the coordinates of the Ship.
-     * 
-     * @param rAngle rotation angle in radians 
-     */
-    public void rotateShip(double rAngle) {
-        double x, y;
-        for (int i = 0; i < npoints; i++) {
-            x = this.xpoints[i] - centroidx;
-            y = this.ypoints[i] - centroidy;
-            this.xpoints[i] = (int) (centroidx + 
-                Math.round(((x * Math.cos(rAngle)) - (y * Math.sin(rAngle)))));
-            this.ypoints[i] = (int) (centroidy +
-                Math.round(((x * Math.sin(rAngle)) + (y * Math.cos(rAngle)))));
-        }
     }
 
     /**
