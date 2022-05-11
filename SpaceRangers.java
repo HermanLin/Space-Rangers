@@ -42,14 +42,22 @@ public class SpaceRangers extends JFrame {
                     universe.spaceship.rotateRight();
                 }
                 if (e.getKeyCode() == KeyEvent.VK_UP) {
-                    universe.spaceship.move();
+                    universe.spaceship.increaseVelocity();
+                }
+                if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+                    universe.spaceship.decreaseVelocity();
                 }
             }
         });
 
         new Thread() {
             public void run() {
-                while(true) { universe.repaint(); }
+                while(true) { 
+                    try {
+                        sleep(10);
+                    } catch (InterruptedException e) {}
+                    universe.repaint(); 
+                }
             }
         }.start();
 
@@ -92,6 +100,8 @@ class Universe extends JPanel {
         g2d.translate(0, 0);
 
         g2d.setColor(spaceship.getColor());
+
+        spaceship.move();
         
         g2d.translate(spaceship.getCenterX(), 
                       spaceship.getCenterY());
