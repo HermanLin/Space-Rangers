@@ -79,13 +79,6 @@ public class Ship extends Polygon {
     public void setVelocityY(double vely) { velocityy = vely; }
 
     /**
-     * Get coordinates of the nose of the ship. This is used to get
-     * the location from which projectiles will spawn from
-     */
-    public double getShipNoseX() { return this.xpoints[0]; }
-    public double getShipNoseY() { return this.ypoints[0]; }
-
-    /**
     * Calculates the centroid of the Ship that is used
     * when rotating the ship.
     * 
