@@ -12,9 +12,9 @@ import java.awt.geom.Point2D.Double;
 
 public class Ship extends Polygon {
 
-    // Center variables for the Ship, used in translation
-    private double centerx;
-    private double centery;
+    // Position variables for the Ship, used in translation
+    private double positionx;
+    private double positiony;
     // Centroid variables for the Ship, used in rotation and positioning   
     private double centroidx;
     private double centroidy;
@@ -51,8 +51,8 @@ public class Ship extends Polygon {
         computeTranslatedCentroid();
 
         // set default starting position
-        centerx = SpaceRangers.SCREEN_WIDTH/2;
-        centery = SpaceRangers.SCREEN_HEIGHT/2; 
+        positionx = SpaceRangers.SCREEN_WIDTH/2;
+        positiony = SpaceRangers.SCREEN_HEIGHT/2; 
     }
 
     // Getters and Setters
@@ -61,10 +61,10 @@ public class Ship extends Polygon {
     public Color getColor() { return color; }
     public void setColor(Color color) { this.color = color; }
 
-    public double getCenterX() { return centerx; }
-    public double getCenterY() { return centery; }
-    public void setCenterX(double xcoord) { centerx = xcoord; }
-    public void setCenterY(double ycoord) { centery = ycoord; }
+    public double getPositionX() { return positionx; }
+    public double getPositionY() { return positiony; }
+    public void setPositionX(double xcoord) { positionx = xcoord; }
+    public void setPositionY(double ycoord) { positiony = ycoord; }
 
     public double getCentroidX() { return centroidx; }
     public double getCentroidY() { return centroidy; }
@@ -116,8 +116,8 @@ public class Ship extends Polygon {
      * translated location
      */
     public void computeTranslatedCentroid() {
-        t_centroidx = centroidx + centerx;
-        t_centroidy = centroidy + centery;
+        t_centroidx = centroidx + positionx;
+        t_centroidy = centroidy + positiony;
     }
 
     /**
@@ -168,14 +168,14 @@ public class Ship extends Polygon {
         else if (velocityy < -3.0) { velocityy = -3.0; }
 
         // update the Ship's location
-        centerx += velocityx;
-        centery += velocityy;
+        positionx += velocityx;
+        positiony += velocityy;
 
         // if the Ship goes off screen, 
         // circle back to the other side
-        if (centerx < 0) { centerx = SpaceRangers.SCREEN_WIDTH; }
-        else if (centerx > SpaceRangers.SCREEN_WIDTH) { centerx = 0; }
-        if (centery < 0) { centery = SpaceRangers.SCREEN_HEIGHT; }
-        else if (centery > SpaceRangers.SCREEN_HEIGHT) { centery = 0; }
+        if (positionx < 0) { positionx = SpaceRangers.SCREEN_WIDTH; }
+        else if (positionx > SpaceRangers.SCREEN_WIDTH) { positionx = 0; }
+        if (positiony < 0) { positiony = SpaceRangers.SCREEN_HEIGHT; }
+        else if (positiony > SpaceRangers.SCREEN_HEIGHT) { positiony = 0; }
     }
 }
