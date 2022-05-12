@@ -16,9 +16,12 @@ import java.util.ArrayList;
 
 public class SpaceRangers extends JFrame {
 
-    public static int SCREEN_WIDTH = 800;
-    public static int SCREEN_HEIGHT = 800;
+    public static final int SCREEN_WIDTH = 800;
+    public static final int SCREEN_HEIGHT = 800;
     private Universe universe;
+
+    public static boolean keyHeld = false;
+    public static int heldKeyCode;
 
     /**
      * Constructor for creating the JFrame and initializing the 
@@ -39,17 +42,19 @@ public class SpaceRangers extends JFrame {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                    //universe.spaceship.computeCentroid();
+                    keyHeld = true; heldKeyCode = e.getKeyCode();
                     universe.spaceship.rotateLeft();
                 }
                 if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                    //universe.spaceship.computeCentroid();
+                    keyHeld = true; heldKeyCode = e.getKeyCode();
                     universe.spaceship.rotateRight();
                 }
                 if (e.getKeyCode() == KeyEvent.VK_UP) {
+                    keyHeld = true; heldKeyCode = e.getKeyCode();
                     universe.spaceship.increaseVelocity();
                 }
                 if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+                    keyHeld = true; heldKeyCode = e.getKeyCode();
                     universe.spaceship.decreaseVelocity();
                 }
                 if (e.getKeyCode() == KeyEvent.VK_SPACE) {
@@ -60,6 +65,9 @@ public class SpaceRangers extends JFrame {
                                                            universe.spaceship.getTranslatedCentroidY()));
                 }
             }
+            
+            @Override
+            public void keyReleased(KeyEvent e) { keyHeld = false; }
         });
 
         // Thread that continually updates the Universe
@@ -115,6 +123,16 @@ class Universe extends JPanel {
         g2d.setTransform(identity);
         // set the color to the color of the spaceship
         g2d.setColor(spaceship.getColor());
+        // check if the player is holding down a key for smoother movement
+        if (SpaceRangers.keyHeld && SpaceRangers.heldKeyCode == KeyEvent.VK_LEFT) {
+            spaceship.rotateLeft();
+        } else if (SpaceRangers.keyHeld && SpaceRangers.heldKeyCode == KeyEvent.VK_RIGHT) {
+            spaceship.rotateRight();
+        } else if (SpaceRangers.keyHeld && SpaceRangers.heldKeyCode == KeyEvent.VK_UP) {
+            spaceship.increaseVelocity();
+        } else if (SpaceRangers.keyHeld && SpaceRangers.heldKeyCode == KeyEvent.VK_DOWN) {
+            spaceship.decreaseVelocity();
+        }
         // move the spaceship
         spaceship.move();
         // move the graphics to the ship's relative location
