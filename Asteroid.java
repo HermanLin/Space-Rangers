@@ -61,15 +61,17 @@ class Asteroid extends Polygon {
     Asteroid(ArrayList<Asteroid> asteroids) {
         super();
         type = random.nextInt(4);
-        System.out.println("Type: " + type);
+        this.npoints = nVertex[type];
+        System.out.println("Type: " + type + ", nVertex: " + npoints);
 
-        int[][] temp_array = {new int[] {},new int[] {}};
-        temp_array[0] = coordinates[type * 2];
-        temp_array[1] = coordinates[type * 2 + 1]; 
         // this.xpoints = coordinates[type * 2];
         // this.ypoints = coordinates[type * 2 + 1]; 
-        this.npoints = nVertex[type];
-        scale = 3.0;
+        int[][] temp_array = {new int[npoints], new int[npoints]};        
+        //temp_array[0] = coordinates[type * 2];
+        //temp_array[1] = coordinates[type * 2 + 1]; 
+        System.arraycopy(coordinates[type * 2], 0, temp_array[0], 0, nVertex[type]);
+        System.arraycopy(coordinates[type * 2 + 1], 0, temp_array[1], 0, nVertex[type]);        
+        scale = 10.0;
 
         for (int i = 0; i < npoints; i++) { 
             // this.xpoints[i] *= scale; 
@@ -80,7 +82,7 @@ class Asteroid extends Polygon {
 
         this.xpoints = temp_array[0];
         this.ypoints = temp_array[1];
-        //System.out.println(this);
+        System.out.println(this);
 
         this.asteroids = asteroids;
         computeCentroid();
