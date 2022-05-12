@@ -11,9 +11,9 @@ import java.awt.*;
 public class Projectile extends Polygon {
 
     // Data on the Projectile Polygon
-    private static int npoints = 4;
-    private static int[] xpoints = {-10,-8,-8,-10};
-    private static int[] ypoints = {-10,-10,-8,-8};
+    private static final int npoints = 4;
+    private static final int[] xpoints = {-10,-8,-8,-10};
+    private static final int[] ypoints = {-10,-10,-8,-8};
     // The color of the projectile
     private Color color;
     // Position of the projectile
