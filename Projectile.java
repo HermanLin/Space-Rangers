@@ -47,6 +47,11 @@ public class Projectile extends Polygon {
     public double getPositionX() { return positionx; }
     public double getPositionY() { return positiony; }
     public boolean isAlive() { return alive; }
+    public void destroy() { alive = false; }
+
+    public Rectangle getBounds() { 
+        return new Rectangle((int)positionx, (int)positiony, 2, 2);
+    }
 
     /**
      * Moves the projectile a specific velocity in a 

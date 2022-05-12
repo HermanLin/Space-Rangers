@@ -154,13 +154,29 @@ class Universe extends JPanel {
             } 
         }
 
+        // move and update asteroids within the universe
         for (Asteroid a : asteroids) {
-            a.move();
-            g2d.setTransform(identity);
-            g2d.translate(a.getPositionX(),a.getPositionY());
-            g2d.rotate(Math.toRadians(a.getDirection()),
-                       a.getCentroidX(), a.getCentroidY());
-            g2d.drawPolygon(a);
+            if (a.isAlive()) {
+                // check if any projectile intersects with Asteroid a
+                Area aBounds = new Area(a.getBounds());
+                for (Projectile p : ammunition) {
+                    Area pBounds = new Area(p.getBounds());
+                    pBounds.intersect(aBounds);
+                    boolean collided = !pBounds.isEmpty();
+                    if (collided) { 
+                        // System.out.println("Collision: " + aBounds + " with " + pBounds);
+                        a.destroy(); 
+                        p.destroy();
+                    }
+                }
+                // move the asteroid
+                a.move();
+                g2d.setTransform(identity);
+                g2d.translate(a.getPositionX(),a.getPositionY());
+                g2d.rotate(Math.toRadians(a.getDirection()),
+                        a.getCentroidX(), a.getCentroidY());
+                g2d.drawPolygon(a);
+            }
         }
     }
 }
