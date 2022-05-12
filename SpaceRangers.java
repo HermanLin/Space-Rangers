@@ -140,6 +140,8 @@ class Universe extends JPanel {
             a.move();
             g2d.setTransform(identity);
             g2d.translate(a.getPositionX(),a.getPositionY());
+            g2d.rotate(Math.toRadians(a.getDirection()),
+                       a.getCentroidX(), a.getCentroidY());
             g2d.drawPolygon(a);
         }
     }
