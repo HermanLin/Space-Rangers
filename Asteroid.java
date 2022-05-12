@@ -13,6 +13,7 @@ import java.util.ArrayList;
  */
 
 class Asteroid extends Polygon {
+    public Random random = new Random();//(System.currentTimeMillis());
 
     // An ArrayList that contains all the asteroids within the
     // world. Asteroids maintain their own presence in the universe
@@ -45,12 +46,12 @@ class Asteroid extends Polygon {
     // Direction the Asteroid moves
     private double direction;
     // Velocities of the Asteroid
-    private double velocityx;
-    private double velocityy;
+    private double velocityx = 1.5;
+    private double velocityy = 1.5;
     // Color of the Asteroid
     private Color color = Color.WHITE;
 
-    public Random random = new Random();//(System.currentTimeMillis());
+    
     // Randomize the type of the default asteroid
     private int type;
 
@@ -61,16 +62,25 @@ class Asteroid extends Polygon {
         super();
         type = random.nextInt(4);
         System.out.println("Type: " + type);
-        this.xpoints = coordinates[type * 2];
-        this.ypoints = coordinates[type * 2 + 1]; 
+
+        int[][] temp_array = {new int[] {},new int[] {}};
+        temp_array[0] = coordinates[type * 2];
+        temp_array[1] = coordinates[type * 2 + 1]; 
+        // this.xpoints = coordinates[type * 2];
+        // this.ypoints = coordinates[type * 2 + 1]; 
         this.npoints = nVertex[type];
-        scale = 10.0;
+        scale = 3.0;
 
         for (int i = 0; i < npoints; i++) { 
-            this.xpoints[i] *= scale; 
-            this.ypoints[i] *= scale;
+            // this.xpoints[i] *= scale; 
+            // this.ypoints[i] *= scale;
+            temp_array[0][i] *= scale;
+            temp_array[1][i] *= scale;
         }
-        System.out.println(this);
+
+        this.xpoints = temp_array[0];
+        this.ypoints = temp_array[1];
+        //System.out.println(this);
 
         this.asteroids = asteroids;
         computeCentroid();
@@ -179,6 +189,10 @@ class Asteroid extends Polygon {
         }
     }
 
+    public void randomDirection() {
+        direction = 360 * random.nextDouble();
+    }
+
     /**
      * Represent the Asteroid through its x/y coordinates
      */
@@ -189,5 +203,15 @@ class Asteroid extends Polygon {
         for (int y : this.ypoints) { ret += y + " "; }
         ret += "]";
         return ret;
+    }
+
+    public void move() {
+        positionx += velocityx * Math.cos(Math.toRadians(direction + 90));
+        positiony += velocityy * Math.sin(Math.toRadians(direction + 90));
+
+        if (positionx < 0) { positionx = SpaceRangers.SCREEN_WIDTH; }
+        else if (positionx > SpaceRangers.SCREEN_WIDTH) { positionx = 0; }
+        if (positiony < 0) { positiony = SpaceRangers.SCREEN_HEIGHT; }
+        else if (positiony > SpaceRangers.SCREEN_HEIGHT) { positiony = 0; }
     }
 }
