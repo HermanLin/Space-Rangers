@@ -143,8 +143,8 @@ public class Ship extends Polygon {
      */
     public void increaseVelocity() {
         moveFacing = facing + 90;
-        velocityx += 0.03 * Math.cos(Math.toRadians(moveFacing));
-        velocityy += 0.03 * Math.sin(Math.toRadians(moveFacing));
+        velocityx += 0.01 * Math.cos(Math.toRadians(moveFacing));
+        velocityy += 0.01 * Math.sin(Math.toRadians(moveFacing));
     }
     /**
      * Decrease the ship's velocity based on the direction
@@ -153,8 +153,8 @@ public class Ship extends Polygon {
      */
     public void decreaseVelocity() {
         moveFacing = facing + 90;
-        velocityx -= 0.03 * Math.cos(Math.toRadians(moveFacing));
-        velocityy -= 0.03 * Math.sin(Math.toRadians(moveFacing));
+        velocityx -= 0.01 * Math.cos(Math.toRadians(moveFacing));
+        velocityy -= 0.01 * Math.sin(Math.toRadians(moveFacing));
     }
 
     /**
