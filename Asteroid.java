@@ -21,7 +21,7 @@ class Asteroid extends Polygon {
     // 4 different shapes of Asteroids where each consecutive
     // pair of indices represents the x/y coordinates of an
     // asteroid shape
-    private static int[][] coordinates = {
+    private final int[][] coordinates = {
         // new int[] {0,1,3,3,1,-1,-3,-3,-1,3,-1}, 
         // new int[] {2,3,1,-1,-3,-3,-1,0,0,2,3},
         new int[] {0,1,3,3,1,-1,-3,-3,-1,-1,0}, 
@@ -34,7 +34,7 @@ class Asteroid extends Polygon {
         new int[] {2,3,1,-2,-2,-3,-2,-1,0,2,3}
     };
     // Represents the number of points for each asteroid shape
-    private static int[] nVertex = {11,10,10,11};
+    private final int[] nVertex = {11,10,10,11};
     // Represents how large the asteroid should be
     private double scale;
     // Position variables for the Asteroid, used in translation
