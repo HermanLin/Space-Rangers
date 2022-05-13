@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @author Devin Zhu
  */
 
-public class Projectile extends Polygon implements Serializable {
+public class Projectile extends Polygon {
 
     // Data on the Projectile Polygon
     private static final int[] xcoords = {-10,-8,-8,-10};
@@ -21,7 +21,7 @@ public class Projectile extends Polygon implements Serializable {
     private double positionx;
     private double positiony;
     // Velocity of the projectile (set speed of 5)
-    private transient double velocity = 5;
+    private double velocity = 5;
     // Direction that the projectile moves in
     private double direction;
     // Boolean for determining when the projectile is offscreen/destroyed

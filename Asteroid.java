@@ -14,7 +14,7 @@ import java.io.Serializable;
  * @author Devin Zhu
  */
 
-class Asteroid extends Polygon implements Serializable {
+class Asteroid extends Polygon {
     public Random random = new Random();
 
     // An ArrayList that contains all the asteroids within the
@@ -36,7 +36,7 @@ class Asteroid extends Polygon implements Serializable {
     // Represents the number of points for each asteroid shape
     private final int[] nVertex = {11,10,10,11};
     // Represents how large the asteroid should be
-    private transient int scale;
+    private int scale; 
     // Position variables for the Asteroid, used in translation
     private double positionx;
     private double positiony;
@@ -46,10 +46,10 @@ class Asteroid extends Polygon implements Serializable {
     // Direction the Asteroid moves
     private double direction;
     // Velocities of the Asteroid
-    private transient double velocityx = 1.5;
-    private transient double velocityy = 1.5;
+    private double velocityx = 1.5; 
+    private double velocityy = 1.5; 
     // Type of the asteroids
-    private transient int type;
+    private int type; 
     // Boolean for determining when the asteroid is destroyed
     private boolean alive = true;
 

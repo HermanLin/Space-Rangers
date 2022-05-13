@@ -14,15 +14,15 @@ import java.util.*;
 public class Client {
 
     Socket socket;
-    ObjectInputStream objIn;
-    ObjectOutputStream objOut;
+    DataInputStream sin;
+    DataOutputStream sout;
     
     Client() {}
     Client(Socket newSocket) {
         try {
             socket = newSocket;
-            objIn = new ObjectInputStream(newSocket.getInputStream());
-            objOut = new ObjectOutputStream(newSocket.getOutputStream());
+            sin = new DataInputStream(newSocket.getInputStream());
+            sout = new DataOutputStream(newSocket.getOutputStream());
         } catch (IOException e) {}
     }
 
@@ -31,18 +31,20 @@ public class Client {
             System.out.println("Attempting to connect");
             socket = new Socket(address, Server.DEFAULT_PORT);
             System.out.println("Connected");
-            objIn = new ObjectInputStream(socket.getInputStream());
+            sin = new DataInputStream(socket.getInputStream());
             System.out.println("Input Stream made");
-            objOut = new ObjectOutputStream(socket.getOutputStream());
+            sout = new DataOutputStream(socket.getOutputStream());
             System.out.println("Output Stream made");
             return true;
         } catch (Exception e) { return false; }
     }
 
     //read data from server
-    public Data readFromServer() {
+    public byte[] readFromServer() {
         try {
-            Data data = (Data) (objIn.readObject());
+            int length = sin.available();
+            byte[] data = new byte[length];
+            sin.readFully(data);
             return data;
 
         } catch (Exception e) {}
@@ -50,9 +52,9 @@ public class Client {
     }
 
     // write the ship object to the server
-    public void writeToServer(Data data) {
+    public void writeToServer(byte[] data) {
         try {
-            objOut.writeObject(data);
+            sout.write(data, 0, data.length);
         } catch (IOException e) {
 
         }

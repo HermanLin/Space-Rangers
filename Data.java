@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * @author Devin Zhu
  */
 
-class Data implements Serializable {
+class Data {
 
     // player
     public Ship player;

@@ -30,11 +30,11 @@ public class Server {
         players.remove(player);
     }
 
-    public static void writeToOtherPlayers(Data data, Connection src) {
+    public static void writeToOtherPlayers(byte[] data, Connection src) {
         for (Connection p : players) {
             if (p.equals(src)) { continue; }
             else {
-                try { p.objOut.writeObject(data); }
+                try { p.sout.write(data, 0, data.length); }
                 catch (IOException e) {}
             }
         }
@@ -61,8 +61,8 @@ public class Server {
 class Connection extends Thread {
 
     Socket socket;
-    ObjectInputStream objIn;
-    ObjectOutputStream objOut;
+    DataInputStream sin;
+    DataOutputStream sout;
     Color playerColor;
 
     Connection(Socket newPlayerSocket,
@@ -72,9 +72,9 @@ class Connection extends Thread {
             // initalize the Player's socket connections
             socket = newPlayerSocket;
             System.out.println("Connection Received");
-            objIn = new ObjectInputStream(socket.getInputStream());
+            sin = new DataInputStream(socket.getInputStream());
             System.out.println("Input Stream made");
-            objOut = new ObjectOutputStream(socket.getOutputStream());
+            sout = new DataOutputStream(socket.getOutputStream());
             System.out.println("Output Stream made");
             // if (!Server.isEmpty()) {
             //     Connection firstPlayer = Server.getFirst();
@@ -90,7 +90,9 @@ class Connection extends Thread {
     public void run() {
         try {
             try {
-                Data data = (Data)(objIn.readObject());
+                int length = sin.available();
+                byte[] data = new byte[length];
+                sin.readFully(data);
                 Server.writeToOtherPlayers(data, this);
             } catch (Exception e) {
             } finally {

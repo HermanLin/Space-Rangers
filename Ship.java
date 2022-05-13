@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @author Devin Zhu
  */
 
-public class Ship extends Polygon implements Serializable {
+public class Ship extends Polygon {
 
     // Coordinate data for the Ship
     private static final int[] xcoords = {0, 10, 0, -10};
@@ -23,14 +23,14 @@ public class Ship extends Polygon implements Serializable {
     // Centroid variables for the Ship, used in rotation and positioning   
     private double centroidx;
     private double centroidy;
-    private transient double t_centroidx;
-    private transient double t_centroidy;
+    private double t_centroidx;
+    private double t_centroidy;
     // The direction the Ship is facing
     private double facing = 180; // starts facing up
-    private transient double moveFacing = 270; 
+    private double moveFacing = 270; 
     // Velocity of the ship, starts at 0 in both x/y direction
-    private transient double velocityx = 0;
-    private transient double velocityy = 0;
+    private double velocityx = 0;
+    private double velocityy = 0;
     // Describes the color of the ship
     private Color color;
 
