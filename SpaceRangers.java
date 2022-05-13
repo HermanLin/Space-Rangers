@@ -160,6 +160,7 @@ class Universe extends JPanel {
             } 
         }
 
+        g2d.setColor(Color.WHITE);
         // move and update asteroids within the universe
         for (Asteroid a : asteroids) {
             if (a.isAlive()) {
