@@ -46,6 +46,7 @@ public class Projectile extends Polygon {
     public Polygon getProjectile() { return this; }
     public double getPositionX() { return positionx; }
     public double getPositionY() { return positiony; }
+    public double getDirection() { return direction; }
     public boolean isAlive() { return alive; }
     public void destroy() { alive = false; }
 
