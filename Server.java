@@ -48,6 +48,8 @@ public class Server {
         System.arraycopy(data, 0, processed, 0, data.length);
 
         // check for collisions with asteroids 
+        
+        return {};
     }
 
     public static void writeToAll(byte[] data) {
