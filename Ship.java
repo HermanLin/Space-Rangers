@@ -12,6 +12,10 @@ import java.awt.geom.Point2D.Double;
 
 public class Ship extends Polygon {
 
+    // Coordinate data for the Ship
+    private static final int[] xpoints = {0, 10, 0, -10};
+    private static final int[] ypoints = {0, -25, -20, -25};
+    private static final int npoints = 4;
     // Position variables for the Ship, used in translation
     private double positionx;
     private double positiony;
@@ -29,30 +33,34 @@ public class Ship extends Polygon {
     // Describes the color of the ship
     private Color color;
 
-    Ship() {
-        // default location for a new ship
-//        this(new int[] {400, 410, 400, 390}, 
-//             new int[] {400, 375, 380, 375},
-          this(new int[] {0, 10, 0, -10},
-               new int[] {0, -25, -20, -25},   
-               4, Color.WHITE);   
-    }
-
     /**
-     * @param xpoints x-coordinate points of the Ship
-     * @param ypoints y-coordinate points of the Ship
-     * @param npoints the number of xy-coordinate pairs
-     * @param color the color of the Ship
+     * @param color the color of the ship
      */
-    Ship(int[] xpoints, int[] ypoints, int npoints, Color color) {
+    Ship(Color color) {
         super(xpoints, ypoints, npoints);
-        this.color = color; 
-        computeCentroid();
-        computeTranslatedCentroid();
+        this.color = color;
 
         // set default starting position
         positionx = SpaceRangers.SCREEN_WIDTH/2;
         positiony = SpaceRangers.SCREEN_HEIGHT/2; 
+
+        computeCentroid();
+        computeTranslatedCentroid();
+    }
+
+    /**
+     * @param color the color of the Ship
+     * @param posx the x coordinate of the Ship
+     * @param posy the y coordinate of the Ship
+     */
+    Ship(Color color, double posx, double posy) {
+        super(xpoints, ypoints, npoints);
+        this.color = color; 
+        positionx = posx;
+        positiony = posy;
+
+        computeCentroid();
+        computeTranslatedCentroid();
     }
 
     // Getters and Setters
