@@ -210,6 +210,9 @@ class Asteroid extends Polygon {
         return ret;
     }
 
+    /**
+     * Move the Asteroid according to the velocity and direction values
+     */
     public void move() {
         positionx += velocityx * Math.cos(Math.toRadians(direction + 90));
         positiony += velocityy * Math.sin(Math.toRadians(direction + 90));
