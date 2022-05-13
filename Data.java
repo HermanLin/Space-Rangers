@@ -5,9 +5,8 @@ import java.util.ArrayList;
  * The sole purpose of this class is to provide an easy
  * way to transfer data to and from the server and player.
  * It is passed through the network sockets using the
- * ObjectInputStream and ObjectOutputStream classes. The 
- * fields of this class represents all necessary data for
- * a smooth gaming experience.
+ * InputStream and OutputStream classes. The fields of this 
+ * class represents all necessary data for gameplay.
  *
  * @author Herman Lin
  * @author Devin Zhu
