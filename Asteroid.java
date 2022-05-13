@@ -19,7 +19,7 @@ class Asteroid extends Polygon implements Serializable {
 
     // An ArrayList that contains all the asteroids within the
     // world. Asteroids maintain their own presence in the universe
-    ArrayList<Asteroid> asteroids;
+    transient ArrayList<Asteroid> asteroids;
     // 4 different shapes of Asteroids where each consecutive
     // pair of indices represents the x/y coordinates of an
     // asteroid shape
@@ -36,7 +36,7 @@ class Asteroid extends Polygon implements Serializable {
     // Represents the number of points for each asteroid shape
     private final int[] nVertex = {11,10,10,11};
     // Represents how large the asteroid should be
-    private int scale;
+    private transient int scale;
     // Position variables for the Asteroid, used in translation
     private double positionx;
     private double positiony;
@@ -46,12 +46,10 @@ class Asteroid extends Polygon implements Serializable {
     // Direction the Asteroid moves
     private double direction;
     // Velocities of the Asteroid
-    private double velocityx = 1.5;
-    private double velocityy = 1.5;
-    // Color of the Asteroid
-    private Color color = Color.WHITE;
+    private transient double velocityx = 1.5;
+    private transient double velocityy = 1.5;
     // Type of the asteroids
-    private int type;
+    private transient int type;
     // Boolean for determining when the asteroid is destroyed
     private boolean alive = true;
 

@@ -14,23 +14,23 @@ import java.io.Serializable;
 public class Ship extends Polygon implements Serializable {
 
     // Coordinate data for the Ship
-    private final int[] xcoords = {0, 10, 0, -10};
-    private final int[] ycoords = {0, -25, -20, -25};
-    private final int nVertex = 4;
+    private static final int[] xcoords = {0, 10, 0, -10};
+    private static final int[] ycoords = {0, -25, -20, -25};
+    private static final int nVertex = 4;
     // Position variables for the Ship, used in translation
     private double positionx;
     private double positiony;
     // Centroid variables for the Ship, used in rotation and positioning   
     private double centroidx;
     private double centroidy;
-    private double t_centroidx;
-    private double t_centroidy;
+    private transient double t_centroidx;
+    private transient double t_centroidy;
     // The direction the Ship is facing
     private double facing = 180; // starts facing up
-    private double moveFacing = 270; 
+    private transient double moveFacing = 270; 
     // Velocity of the ship, starts at 0 in both x/y direction
-    private double velocityx = 0;
-    private double velocityy = 0;
+    private transient double velocityx = 0;
+    private transient double velocityy = 0;
     // Describes the color of the ship
     private Color color;
 
@@ -38,10 +38,7 @@ public class Ship extends Polygon implements Serializable {
      * @param color the color of the ship
      */
     Ship(Color color) {
-        super();
-        this.xpoints = xcoords;
-        this.ypoints = ycoords;
-        this.npoints = nVertex;
+        super(xcoords, ycoords, nVertex);
         this.color = color;
 
         // set default starting position
@@ -58,10 +55,7 @@ public class Ship extends Polygon implements Serializable {
      * @param posy the y coordinate of the Ship
      */
     Ship(Color color, double posx, double posy) {
-        super();
-        this.xpoints = xcoords;
-        this.ypoints = ycoords;
-        this.npoints = nVertex;
+        super(xcoords, ycoords, nVertex);
         this.color = color; 
         positionx = posx;
         positiony = posy;

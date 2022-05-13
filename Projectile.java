@@ -12,16 +12,16 @@ import java.io.Serializable;
 public class Projectile extends Polygon implements Serializable {
 
     // Data on the Projectile Polygon
-    private final int[] xcoords = {-10,-8,-8,-10};
-    private final int[] ycoords = {-10,-10,-8,-8};
-    private final int nVertex = 4;
+    private static final int[] xcoords = {-10,-8,-8,-10};
+    private static final int[] ycoords = {-10,-10,-8,-8};
+    private static final int nVertex = 4;
     // The color of the projectile
     private Color color;
     // Position of the projectile
     private double positionx;
     private double positiony;
     // Velocity of the projectile (set speed of 5)
-    private double velocity = 5;
+    private transient double velocity = 5;
     // Direction that the projectile moves in
     private double direction;
     // Boolean for determining when the projectile is offscreen/destroyed
@@ -36,10 +36,7 @@ public class Projectile extends Polygon implements Serializable {
      * @param posy the starting y-coord of the projectile
      */
     Projectile(Color color, double direction, double posx, double posy) {
-        super();
-        this.xpoints = xcoords;
-        this.ypoints = ycoords;
-        this.npoints = nVertex;
+        super(xcoords, ycoords, nVertex);
         this.color = color;
         this.direction = direction;
         positionx = posx;
