@@ -163,7 +163,7 @@ class Universe extends JPanel {
                         p.destroy();
                     }
                 }
-                // move the asteroid
+                // move and draw the asteroid
                 a.move();
                 g2d.setTransform(identity);
                 g2d.translate(a.getPositionX(),a.getPositionY());
