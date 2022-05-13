@@ -108,8 +108,6 @@ class Universe extends JPanel {
 
         for (int i = 0; i < numAsteroids; i++) {
             Asteroid newAsteroid = new Asteroid(asteroids);
-            newAsteroid.randomLocation();
-            newAsteroid.randomDirection();
             asteroids.add(newAsteroid);
         }
     }

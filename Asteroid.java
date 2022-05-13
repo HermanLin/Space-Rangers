@@ -61,7 +61,7 @@ class Asteroid extends Polygon {
         // randomize different aspects of the asteroid
         type = random.nextInt(4); 
         direction = 360 * random.nextDouble(); 
-        randomDirection();
+        this.randomLocation();
         
         this.npoints = nVertex[type];
         scale = 10;
@@ -98,6 +98,9 @@ class Asteroid extends Polygon {
              int type, int scale, ArrayList<Asteroid> asteroids) {
         super();
         this.npoints = nVertex[type];
+        positionx = posX; positiony = posY;
+        direction = dir; 
+        velocityx = velX; velocityy = velY;
 
         // copy the coordinate data and process 
         int[][] temp_array = {new int[npoints], new int[npoints]};       
@@ -111,10 +114,6 @@ class Asteroid extends Polygon {
         this.ypoints = temp_array[1];
         this.scale = scale;
         this.asteroids = asteroids;
-
-        positionx = posX; positiony = posY;
-        direction = dir; 
-        velocityx = velX; velocityy = velY;
 
         computeCentroid();
     }
@@ -197,10 +196,6 @@ class Asteroid extends Polygon {
             positionx = SpaceRangers.SCREEN_WIDTH;
             positiony = random.nextDouble() * SpaceRangers.SCREEN_HEIGHT;
         }
-    }
-
-    public void randomDirection() {
-        direction = 360 * random.nextDouble();
     }
 
     /**
