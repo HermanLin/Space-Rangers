@@ -12,22 +12,37 @@ import java.util.*;
  */
 
 public class Client {
-    Socket sock;
-    ObjectInputStream sin;
-    ObjectOutputStream sout;
+
+    Socket socket;
+    ObjectInputStream objIn;
+    ObjectOutputStream objOut;
     
+    Client() {}
     Client(Socket newSocket) {
         try {
-            sock = newSocket;
-            sin = new ObjectInputStream(newSocket.getInputStream());
-            sout = new ObjectOutputStream(newSocket.getOutputStream());
+            socket = newSocket;
+            objIn = new ObjectInputStream(newSocket.getInputStream());
+            objOut = new ObjectOutputStream(newSocket.getOutputStream());
         } catch (IOException e) {}
+    }
+
+    public boolean connectTo(String address) {
+        try {
+            System.out.println("Attempting to connect");
+            socket = new Socket(address, Server.DEFAULT_PORT);
+            System.out.println("Connected");
+            objIn = new ObjectInputStream(socket.getInputStream());
+            System.out.println("Input Stream made");
+            objOut = new ObjectOutputStream(socket.getOutputStream());
+            System.out.println("Output Stream made");
+            return true;
+        } catch (Exception e) { return false; }
     }
 
     //read data from server
     public Data readFromServer() {
         try {
-            Data data = (Data) (sin.readObject());
+            Data data = (Data) (objIn.readObject());
             return data;
 
         } catch (Exception e) {}
@@ -37,7 +52,7 @@ public class Client {
     // write the ship object to the server
     public void writeToServer(Data data) {
         try {
-            sout.writeObject(data);
+            objOut.writeObject(data);
         } catch (IOException e) {
 
         }

@@ -41,7 +41,20 @@ public class Server {
     }
 
     public static void main(String[] args) {
+        players = new ArrayList<Connection>();
 
+        try {
+            ServerSocket ss = new ServerSocket(DEFAULT_PORT);
+
+            while(true) {
+                Socket playerSocket = ss.accept();
+                Connection playerConn = new Connection(playerSocket, players);
+                playerConn.start();
+                players.add(playerConn);
+            }
+        } catch (Exception e) {
+            System.out.println("Could not listen on port " + DEFAULT_PORT);
+        }
     }
 }
 
@@ -55,18 +68,21 @@ class Connection extends Thread {
     Connection(Socket newPlayerSocket,
                ArrayList<Connection> playerList) {
         try {
+            System.out.println("Receiving");
             // initalize the Player's socket connections
             socket = newPlayerSocket;
+            System.out.println("Connection Received");
             objIn = new ObjectInputStream(socket.getInputStream());
+            System.out.println("Input Stream made");
             objOut = new ObjectOutputStream(socket.getOutputStream());
-            
-            if (!Server.isEmpty()) {
-                Connection firstPlayer = Server.getFirst();
-                // directly ask the first Player for Universe data
+            System.out.println("Output Stream made");
+            // if (!Server.isEmpty()) {
+            //     Connection firstPlayer = Server.getFirst();
+            //     // directly ask the first Player for Universe data
 
-                // send update data to the new Player
+            //     // send update data to the new Player
 
-            }
+            // }
         } catch (IOException e) {}
     }
 

@@ -3,7 +3,7 @@ import java.awt.geom.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.ArrayList;
-
+import java.util.concurrent.SynchronousQueue;
 
 /**
  * The SpaceRangers class is the driver class for the entire game.
@@ -18,24 +18,29 @@ public class SpaceRangers extends JFrame {
 
     public static final int SCREEN_WIDTH = 800;
     public static final int SCREEN_HEIGHT = 800;
+    public final int DELAY = 10;
     private Universe universe;
 
     public static boolean keyHeld = false;
     public static int heldKeyCode;
 
+    Client player;
+
     /**
      * Constructor for creating the JFrame and initializing the 
      * JPanel that is responsible for drawing components.
      */
-    SpaceRangers() {
+    SpaceRangers(Client player, Color color) {
         super("Space Rangers");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
-        
-        universe = new Universe();
+
+        System.out.println("New Player with color " + color);
+        this.player = player;
+        universe = new Universe(color);
         this.add(universe);
 
         this.addKeyListener(new KeyAdapter() {
@@ -75,7 +80,7 @@ public class SpaceRangers extends JFrame {
             public void run() {
                 while(true) { 
                     try {
-                        sleep(10); // delay for the whole universe, wow!
+                        sleep(DELAY); // delay for the whole universe, wow!
                     } catch (InterruptedException e) {}
                     universe.repaint(); 
                 }
@@ -86,7 +91,7 @@ public class SpaceRangers extends JFrame {
     }
 
     public static void main(String[] args) {
-        SpaceRangers sr = new SpaceRangers();
+        new StartUp();
     }
 }
 
@@ -96,14 +101,16 @@ class Universe extends JPanel {
     ArrayList<Projectile> ammunition;
     ArrayList<Asteroid> asteroids;
     int numAsteroids = 5;
-    Color playerColor = Color.WHITE;
 
-    Universe() {
+    // a queue that is continually updated with Data from other Players
+    SynchronousQueue<Data> updates = new SynchronousQueue<Data>();
+
+    Universe(Color color) {
         super();
         setBackground(Color.BLACK);
-        spaceship = new Ship(playerColor);
-
+        spaceship = new Ship(color);
         ammunition = new ArrayList<Projectile>();
+
         asteroids = new ArrayList<Asteroid>(numAsteroids);
 
         for (int i = 0; i < numAsteroids; i++) {
