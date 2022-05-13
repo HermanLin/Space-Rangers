@@ -14,7 +14,7 @@ import java.awt.Color;
 
 public class Server {
     
-    static final int DEFAULT_PORT = 5190;
+    public static final int DEFAULT_PORT = 5190;
     // dynamic array that allows for n players
     private static ArrayList<Connection> players;
 
