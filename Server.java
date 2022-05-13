@@ -4,9 +4,9 @@ import java.util.*;
 import java.awt.Color;
 
 /**
- * This is the Server class that accepts connections from
- * players. It also contains server-wide data that is necessary
- * for gameplay.
+ * The Server class accepts and closes connections from Players
+ * whenever possible. It also receives and sends updates from a
+ * Player to all OTHER Players.
  *
  * @author Herman Lin
  * @author Devin Zhu
@@ -18,7 +18,7 @@ public class Server {
     // dynamic array that allows for n players
     private static ArrayList<Connection> players;
     // array containing all the astroids in the game
-    private static Asteroid[] asteroids;
+    private static ArrayList<Asteroid> asteroids;
 
     /**
      * Removes a player from the list of connections
@@ -42,20 +42,22 @@ public class Server {
      * @param data data received from the player
      * @return data that has been processed
      */
-    public static byte[] processData(byte[] data) {
-        // deepcopy of the data
-        byte[] processed = new byte[data.length];
-        System.arraycopy(data, 0, processed, 0, data.length);
+    // public static Data processData(Data data) {
+    //     // check for collisions with asteroids
+    //     for (Asteroid a : data.asteroids) {
 
-        // check for collisions with asteroids 
+    //     }
         
-        return {};
-    }
+    //     return {};
+    // }
 
-    public static void writeToAll(byte[] data) {
+    public static void writeToOtherPlayers(Data data, Connection src) {
         for (Connection p : players) {
-            try { p.sout.write(data); }
-            catch (IOException e) {}
+            if (p.equals(src)) { continue; }
+            else {
+                try { p.sout.write(data); }
+                catch (IOException e) {}
+            }
         }
     }
 
@@ -66,17 +68,17 @@ public class Server {
 
 class Connection extends Thread {
 
-    Socket playerSocket;
-    InputStream sin;
-    OutputStream sout;
+    Socket socket;
+    ObjectInputStream objIn;
+    ObjectOutputStream objOut;
     Color playerColor;
 
     Connection(Socket newPlayerSocket,
                ArrayList<Connection> playerList) {
         try {
-            playerSocket = newPlayerSocket;
-            sin = playerSocket.getInputStream();
-            sout = playerSocket.getOutputStream();
+            socket = newPlayerSocket;
+            objIn = new ObjectInputStream(socket.getInputStream());
+            objOut = new ObjectOutputStream(socket.getOutputStream());
         } catch (IOException e) {}
     }
 
@@ -84,16 +86,13 @@ class Connection extends Thread {
     public void run() {
         try {
             try {
-                int length = sin.available();
-                byte[] buffer = new byte[length];
-                sin.read(buffer);
-
-                Server.processData(buffer);
+                Data data = objIn.readObject();
+                Server.processData(data);
             } catch (Exception e) {
             } finally {
                 playerSocket.close();
                 Server.removePlayer(this);
             }
-        } catch (IOException e) {}
+        } catch (Exception e) {}
     }
 }
