@@ -1,6 +1,5 @@
 import java.awt.*;
 import java.awt.geom.Point2D.Double;
-import java.io.Serializable;
 
 /**
  * The Ship class holds data regarding where the player is

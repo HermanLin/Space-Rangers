@@ -2,7 +2,6 @@ import java.awt.*;
 import java.awt.geom.Area;
 import java.util.Random;
 import java.util.ArrayList;
-import java.io.Serializable;
 
 /**
  * The Asteroid class contains data on a specific Asteroid within the

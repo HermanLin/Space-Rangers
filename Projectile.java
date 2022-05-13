@@ -1,5 +1,4 @@
 import java.awt.*;
-import java.io.Serializable;
 
 /**
  * The Projectile class contains data on the player 
