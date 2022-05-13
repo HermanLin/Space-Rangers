@@ -22,8 +22,6 @@ class Asteroid extends Polygon {
     // pair of indices represents the x/y coordinates of an
     // asteroid shape
     private final int[][] coordinates = {
-        // new int[] {0,1,3,3,1,-1,-3,-3,-1,3,-1}, 
-        // new int[] {2,3,1,-1,-3,-3,-1,0,0,2,3},
         new int[] {0,1,3,3,1,-1,-3,-3,-1,-1,0}, 
         new int[] {2,3,1,-1,-3,-3,-1,0,0,3,2},
         new int[] {0,1,3,2,2,-1,-3,-2,-3,-1},
@@ -52,7 +50,6 @@ class Asteroid extends Polygon {
     private Color color = Color.WHITE;
     // Type of the asteroids
     private int type;
-
     // Boolean for determining when the asteroid is destroyed
     private boolean alive = true;
 
@@ -61,30 +58,24 @@ class Asteroid extends Polygon {
      */
     Asteroid(ArrayList<Asteroid> asteroids) {
         super();
-        // Randomize the type of the default asteroid
-        type = random.nextInt(4);
+        // randomize different aspects of the asteroid
+        type = random.nextInt(4); 
+        direction = 360 * random.nextDouble(); 
+        randomDirection();
+        
         this.npoints = nVertex[type];
-        // System.out.println("Type: " + type + ", nVertex: " + npoints);
-
-        // this.xpoints = coordinates[type * 2];
-        // this.ypoints = coordinates[type * 2 + 1]; 
-        int[][] temp_array = {new int[npoints], new int[npoints]};        
-        //temp_array[0] = coordinates[type * 2];
-        //temp_array[1] = coordinates[type * 2 + 1]; 
-        System.arraycopy(coordinates[type * 2], 0, temp_array[0], 0, nVertex[type]);
-        System.arraycopy(coordinates[type * 2 + 1], 0, temp_array[1], 0, nVertex[type]);        
         scale = 10;
 
+        // copy the coordinate data and process 
+        int[][] temp_array = {new int[npoints], new int[npoints]};       
+        System.arraycopy(coordinates[type * 2], 0, temp_array[0], 0, nVertex[type]);
+        System.arraycopy(coordinates[type * 2 + 1], 0, temp_array[1], 0, nVertex[type]);        
         for (int i = 0; i < npoints; i++) { 
-            // this.xpoints[i] *= scale; 
-            // this.ypoints[i] *= scale;
             temp_array[0][i] *= scale;
             temp_array[1][i] *= scale;
         }
-
         this.xpoints = temp_array[0];
         this.ypoints = temp_array[1];
-        // System.out.println(this);
 
         this.asteroids = asteroids;
         computeCentroid();
@@ -106,11 +97,18 @@ class Asteroid extends Polygon {
     Asteroid(double posX, double posY, double dir, double velX, double velY, 
              int type, int scale, ArrayList<Asteroid> asteroids) {
         super();
-        type = random.nextInt(4);
-        System.out.println("Type: " + type);
-        this.xpoints = coordinates[type * 2];
-        this.ypoints = coordinates[type * 2 + 1]; 
         this.npoints = nVertex[type];
+
+        // copy the coordinate data and process 
+        int[][] temp_array = {new int[npoints], new int[npoints]};       
+        System.arraycopy(coordinates[type * 2], 0, temp_array[0], 0, nVertex[type]);
+        System.arraycopy(coordinates[type * 2 + 1], 0, temp_array[1], 0, nVertex[type]);        
+        for (int i = 0; i < npoints; i++) { 
+            temp_array[0][i] *= scale;
+            temp_array[1][i] *= scale;
+        }
+        this.xpoints = temp_array[0];
+        this.ypoints = temp_array[1];
         this.scale = scale;
         this.asteroids = asteroids;
 
