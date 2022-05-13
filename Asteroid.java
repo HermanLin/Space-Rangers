@@ -121,7 +121,7 @@ class Asteroid extends Polygon {
     public Asteroid getAsteroid() { return this; }
     public int getType() { return type; }
     public void setType(int newType) { type = newType; }
-    public double getScale() { return scale; }
+    public int getScale() { return scale; }
     public void setScale(int newScale) { type = newScale; }
 
     public double getPositionX() { return positionx; }
