@@ -2,6 +2,7 @@ import java.awt.*;
 import java.awt.geom.Area;
 import java.util.Random;
 import java.util.ArrayList;
+import java.io.Serializable;
 
 /**
  * The Asteroid class contains data on a specific Asteroid within the
@@ -13,8 +14,8 @@ import java.util.ArrayList;
  * @author Devin Zhu
  */
 
-class Asteroid extends Polygon {
-    public Random random = new Random();//(System.currentTimeMillis());
+class Asteroid extends Polygon implements Serializable {
+    public Random random = new Random();
 
     // An ArrayList that contains all the asteroids within the
     // world. Asteroids maintain their own presence in the universe

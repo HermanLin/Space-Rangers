@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.io.Serializable;
 
 /**
  * The Projectile class contains data on the player 
@@ -8,12 +9,12 @@ import java.awt.*;
  * @author Devin Zhu
  */
 
-public class Projectile extends Polygon {
+public class Projectile extends Polygon implements Serializable {
 
     // Data on the Projectile Polygon
-    private static final int npoints = 4;
-    private static final int[] xpoints = {-10,-8,-8,-10};
-    private static final int[] ypoints = {-10,-10,-8,-8};
+    private final int[] xcoords = {-10,-8,-8,-10};
+    private final int[] ycoords = {-10,-10,-8,-8};
+    private final int nVertex = 4;
     // The color of the projectile
     private Color color;
     // Position of the projectile
@@ -35,7 +36,10 @@ public class Projectile extends Polygon {
      * @param posy the starting y-coord of the projectile
      */
     Projectile(Color color, double direction, double posx, double posy) {
-        super(xpoints, ypoints, npoints);
+        super();
+        this.xpoints = xcoords;
+        this.ypoints = ycoords;
+        this.npoints = nVertex;
         this.color = color;
         this.direction = direction;
         positionx = posx;

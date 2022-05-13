@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.geom.Point2D.Double;
+import java.io.Serializable;
 
 /**
  * The Ship class holds data regarding where the player is
@@ -10,12 +11,12 @@ import java.awt.geom.Point2D.Double;
  * @author Devin Zhu
  */
 
-public class Ship extends Polygon {
+public class Ship extends Polygon implements Serializable {
 
     // Coordinate data for the Ship
-    private static final int[] xpoints = {0, 10, 0, -10};
-    private static final int[] ypoints = {0, -25, -20, -25};
-    private static final int npoints = 4;
+    private final int[] xcoords = {0, 10, 0, -10};
+    private final int[] ycoords = {0, -25, -20, -25};
+    private final int nVertex = 4;
     // Position variables for the Ship, used in translation
     private double positionx;
     private double positiony;
@@ -37,7 +38,10 @@ public class Ship extends Polygon {
      * @param color the color of the ship
      */
     Ship(Color color) {
-        super(xpoints, ypoints, npoints);
+        super();
+        this.xpoints = xcoords;
+        this.ypoints = ycoords;
+        this.npoints = nVertex;
         this.color = color;
 
         // set default starting position
@@ -54,7 +58,10 @@ public class Ship extends Polygon {
      * @param posy the y coordinate of the Ship
      */
     Ship(Color color, double posx, double posy) {
-        super(xpoints, ypoints, npoints);
+        super();
+        this.xpoints = xcoords;
+        this.ypoints = ycoords;
+        this.npoints = nVertex;
         this.color = color; 
         positionx = posx;
         positiony = posy;
