@@ -96,11 +96,12 @@ class Universe extends JPanel {
     ArrayList<Projectile> ammunition;
     ArrayList<Asteroid> asteroids;
     int numAsteroids = 5;
+    Color playerColor = Color.WHITE;
 
     Universe() {
         super();
         setBackground(Color.BLACK);
-        spaceship = new Ship();
+        spaceship = new Ship(playerColor);
 
         ammunition = new ArrayList<Projectile>();
         asteroids = new ArrayList<Asteroid>(numAsteroids);
