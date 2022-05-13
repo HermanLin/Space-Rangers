@@ -68,14 +68,11 @@ class Connection extends Thread {
     Connection(Socket newPlayerSocket,
                ArrayList<Connection> playerList) {
         try {
-            System.out.println("Receiving");
             // initalize the Player's socket connections
             socket = newPlayerSocket;
-            System.out.println("Connection Received");
             sin = new DataInputStream(socket.getInputStream());
-            System.out.println("Input Stream made");
             sout = new DataOutputStream(socket.getOutputStream());
-            System.out.println("Output Stream made");
+
             // if (!Server.isEmpty()) {
             //     Connection firstPlayer = Server.getFirst();
             //     // directly ask the first Player for Universe data

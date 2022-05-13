@@ -38,7 +38,6 @@ public class SpaceRangers extends JFrame {
         this.setLocationRelativeTo(null);
         this.setVisible(true);
 
-        System.out.println("New Player with color " + color);
         this.player = player;
         universe = new Universe(color);
         this.add(universe);

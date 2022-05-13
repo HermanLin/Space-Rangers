@@ -37,14 +37,11 @@ public class StartUp extends JFrame {
                 playerColor = getColor();
 
                 if (Pattern.matches(IP_ADDRESS, serverAddr)) {
-                    System.out.println("Valid Server Address");
                     Boolean connected = player.connectTo(serverAddr);
                     if (connected) { 
-                        System.out.println("Connected to server");
                         closeWindow();
                         new SpaceRangers(player, playerColor); 
                     } else {
-                        System.out.println("Bad Server");
                         JOptionPane.showMessageDialog(
                             null,
                             "Unable to connect to the server: " + serverAddr,
@@ -52,7 +49,6 @@ public class StartUp extends JFrame {
                             JOptionPane.INFORMATION_MESSAGE);
                     }
                 } else {
-                    System.out.println("Bad Address");
                     JOptionPane.showMessageDialog(
                         null,
                         "Please use a valid server address",

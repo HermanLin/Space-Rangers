@@ -28,13 +28,9 @@ public class Client {
 
     public boolean connectTo(String address) {
         try {
-            System.out.println("Attempting to connect");
             socket = new Socket(address, Server.DEFAULT_PORT);
-            System.out.println("Connected");
             sin = new DataInputStream(socket.getInputStream());
-            System.out.println("Input Stream made");
             sout = new DataOutputStream(socket.getOutputStream());
-            System.out.println("Output Stream made");
             return true;
         } catch (Exception e) { return false; }
     }
