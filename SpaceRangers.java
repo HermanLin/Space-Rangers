@@ -157,14 +157,9 @@ class Universe extends JPanel {
         for (Asteroid a : asteroids) {
             if (a.isAlive()) {
                 // check if any projectile intersects with Asteroid a
-                Area aBounds = new Area(a.getBounds());
                 for (Projectile p : ammunition) {
-                    Area pBounds = new Area(p.getBounds());
-                    pBounds.intersect(aBounds);
-                    boolean collided = !pBounds.isEmpty();
-                    if (collided) { 
-                        // System.out.println("Collision: " + aBounds + " with " + pBounds);
-                        a.destroy(); 
+                    if (a.collidesWith(p)) {
+                        a.destroy();
                         p.destroy();
                     }
                 }

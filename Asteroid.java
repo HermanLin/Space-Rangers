@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.awt.geom.Area;
 import java.util.Random;
 import java.util.ArrayList;
 
@@ -196,6 +197,18 @@ class Asteroid extends Polygon {
             positionx = SpaceRangers.SCREEN_WIDTH;
             positiony = random.nextDouble() * SpaceRangers.SCREEN_HEIGHT;
         }
+    }
+
+    /**
+     * Check whether or not the asteroid collides with a projectile
+     *
+     * @param p the projectile to check collision with
+     */
+    public boolean collidesWith(Projectile p) {
+        Area aBounds = new Area(this.getBounds());
+        Area pBounds = new Area(p.getBounds());
+        pBounds.intersect(aBounds);
+        return !pBounds.isEmpty();
     }
 
     /**
