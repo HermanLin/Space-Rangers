@@ -17,8 +17,9 @@ public class Server {
     static final int DEFAULT_PORT = 5190;
     // dynamic array that allows for n players
     private static ArrayList<Connection> players;
-    // array containing all the astroids in the game
-    private static ArrayList<Asteroid> asteroids;
+
+    public static boolean isEmpty() { return players.isEmpty(); }
+    public static Connection getFirst() { return players.get(0); }
 
     /**
      * Removes a player from the list of connections
@@ -29,33 +30,11 @@ public class Server {
         players.remove(player);
     }
 
-    /**
-     * Process data received from a player so that it is ready
-     * to be sent to all players. This method appends the list of
-     * asteroids afterwards for the full data packet.
-     *
-     * The final datapacket is represented as follows:
-     * [color, null, positionx, positiony, null, 
-     *  position data of all projectiles from player,
-     *  all asteroids]
-     *
-     * @param data data received from the player
-     * @return data that has been processed
-     */
-    // public static Data processData(Data data) {
-    //     // check for collisions with asteroids
-    //     for (Asteroid a : data.asteroids) {
-
-    //     }
-        
-    //     return {};
-    // }
-
     public static void writeToOtherPlayers(Data data, Connection src) {
         for (Connection p : players) {
             if (p.equals(src)) { continue; }
             else {
-                try { p.sout.write(data); }
+                try { p.objOut.writeObject(data); }
                 catch (IOException e) {}
             }
         }
@@ -76,9 +55,18 @@ class Connection extends Thread {
     Connection(Socket newPlayerSocket,
                ArrayList<Connection> playerList) {
         try {
+            // initalize the Player's socket connections
             socket = newPlayerSocket;
             objIn = new ObjectInputStream(socket.getInputStream());
             objOut = new ObjectOutputStream(socket.getOutputStream());
+            
+            if (!Server.isEmpty()) {
+                Connection firstPlayer = Server.getFirst();
+                // directly ask the first Player for Universe data
+
+                // send update data to the new Player
+
+            }
         } catch (IOException e) {}
     }
 
@@ -86,11 +74,11 @@ class Connection extends Thread {
     public void run() {
         try {
             try {
-                Data data = objIn.readObject();
-                Server.processData(data);
+                Data data = (Data)(objIn.readObject());
+                Server.writeToOtherPlayers(data, this);
             } catch (Exception e) {
             } finally {
-                playerSocket.close();
+                socket.close();
                 Server.removePlayer(this);
             }
         } catch (Exception e) {}
