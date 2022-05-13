@@ -12,5 +12,27 @@ import java.util.*;
  */
 
 public class Player {
+    Socket sock;
+    InputStream sin;
+    OutputStream sout;    
     
+    Player(Socket newSocket) {
+        try {
+            sock = newSocket;
+            sin = sock.getInputStream();
+            sout = sock.getOutputStream();
+        } catch (IOException e) {
+
+        }
+    }
+
+    //read data from server
+    public void read() {
+
+    }
+
+    // [angle, null, positionx, positiony, null, posdata of projectiles]
+    public void write() {
+
+    }
 }
