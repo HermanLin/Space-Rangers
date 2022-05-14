@@ -34,8 +34,9 @@ public class Server {
         for (Connection p : players) {
             if (p.equals(src)) { continue; }
             else {
-                try { p.sout.writeUTF(data)); }
-                catch (IOException e) {}
+                // try { p.sout.writeUTF(data); }
+                try { p.sout.print(data); }
+                catch (Exception e) {}
             }
         }
     }
@@ -48,7 +49,7 @@ public class Server {
 
             while(true) {
                 Socket playerSocket = ss.accept();
-                Connection playerConn = new Connection(playerSocket, players);
+                Connection playerConn = new Connection(playerSocket);
                 playerConn.start();
                 players.add(playerConn);
             }
@@ -61,17 +62,19 @@ public class Server {
 class Connection extends Thread {
 
     Socket socket;
-    DataInputStream sin;
-    DataOutputStream sout;
-    Color playerColor;
+    // DataInputStream sin;
+    // DataOutputStream sout;
+    Scanner sin;
+    PrintStream sout;
 
-    Connection(Socket newPlayerSocket,
-               ArrayList<Connection> playerList) {
+    Connection(Socket newPlayerSocket) {
         try {
             // initalize the Player's socket connections
             socket = newPlayerSocket;
-            sin = new DataInputStream(socket.getInputStream());
-            sout = new DataOutputStream(socket.getOutputStream());
+            // sin = new DataInputStream(socket.getInputStream());
+            // sout = new DataOutputStream(socket.getOutputStream());
+            sin = new Scanner(socket.getInputStream());
+            sout = new PrintStream(socket.getOutputStream());
         } catch (IOException e) {}
     }
 
@@ -79,10 +82,16 @@ class Connection extends Thread {
     public void run() {
         try {
             try {
-                String data = sin.readUTF();
-                Server.writeToOtherPlayers(data, this);
+                while(true) {
+                    String data = sin.nextLine();
+                    // String data = sin.readUTF();
+                    // Server.writeToOtherPlayers(data, this);
+                    System.out.println(data);
+                    System.out.println("=====");
+                }
             } catch (Exception e) {
             } finally {
+                System.out.println("Closing");
                 socket.close();
                 Server.removePlayer(this);
             }

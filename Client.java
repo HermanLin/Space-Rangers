@@ -14,23 +14,29 @@ import java.util.*;
 public class Client {
 
     Socket socket;
-    DataInputStream sin;
-    DataOutputStream sout;
+    // DataInputStream sin;
+    // DataOutputStream sout;
+    Scanner sin;
+    PrintStream sout;
     
     Client() {}
     Client(Socket newSocket) {
         try {
             socket = newSocket;
-            sin = new DataInputStream(newSocket.getInputStream());
-            sout = new DataOutputStream(newSocket.getOutputStream());
+            // sin = new DataInputStream(newSocket.getInputStream());
+            // sout = new DataOutputStream(newSocket.getOutputStream());
+            sin = new Scanner(socket.getInputStream());
+            sout = new PrintStream(socket.getOutputStream());
         } catch (IOException e) {}
     }
 
     public boolean connectTo(String address) {
         try {
             socket = new Socket(address, Server.DEFAULT_PORT);
-            sin = new DataInputStream(socket.getInputStream());
-            sout = new DataOutputStream(socket.getOutputStream());
+            // sin = new DataInputStream(socket.getInputStream());
+            // sout = new DataOutputStream(socket.getOutputStream());
+            sin = new Scanner(socket.getInputStream());
+            sout = new PrintStream(socket.getOutputStream());
             return true;
         } catch (Exception e) { return false; }
     }
@@ -38,7 +44,8 @@ public class Client {
     //read data from server
     public String readFromServer() {
         try {
-            String data = sin.readUTF();
+            // String data = sin.readUTF();
+            String data = sin.nextLine();
             return data;
 
         } catch (Exception e) {}
@@ -48,10 +55,8 @@ public class Client {
     // write the ship object to the server
     public void writeToServer(String data) {
         try {
-            sout.writeUTF(data);
-        } catch (IOException e) {
-
-        }
-
+            // sout.writeUTF(data);
+            sout.println(data);
+        } catch (Exception e) {}
     }
 }

@@ -18,13 +18,13 @@ public class SpaceRangers extends JFrame {
 
     public static final int SCREEN_WIDTH = 800;
     public static final int SCREEN_HEIGHT = 800;
-    public final int DELAY = 10;
+    public static final int DELAY = 10;
     private Universe universe;
 
     public static boolean keyHeld = false;
     public static int heldKeyCode;
 
-    Client player;
+    public static Client player;
 
     /**
      * Constructor for creating the JFrame and initializing the 
@@ -74,18 +74,6 @@ public class SpaceRangers extends JFrame {
             public void keyReleased(KeyEvent e) { keyHeld = false; }
         });
 
-        // Thread that continually updates the Universe
-        new Thread() {
-            public void run() {
-                while(true) { 
-                    try {
-                        sleep(DELAY); // delay for the whole universe, wow!
-                    } catch (InterruptedException e) {}
-                    universe.repaint(); 
-                }
-            }
-        }.start();
-
         revalidate();
     }
 
@@ -96,13 +84,17 @@ public class SpaceRangers extends JFrame {
 
 class Universe extends JPanel {
 
+    final int numAsteroids = 5;
+
     Ship spaceship;
     ArrayList<Projectile> ammunition;
     ArrayList<Asteroid> asteroids;
-    int numAsteroids = 5;
 
     // a queue that is continually updated with Data from other Players
     SynchronousQueue<Data> updates = new SynchronousQueue<Data>();
+    // DataProcessor compresses/decompresses updates from the Server
+    DataProcessor dp = new DataProcessor();
+    String data = "";
 
     Universe(Color color) {
         super();
@@ -110,12 +102,30 @@ class Universe extends JPanel {
         spaceship = new Ship(color);
         ammunition = new ArrayList<Projectile>();
 
-        asteroids = new ArrayList<Asteroid>(numAsteroids);
+        // String update = SpaceRangers.player.readFromServer();
+        String update = "";
+        if (update.isEmpty()) {
+            asteroids = new ArrayList<Asteroid>(numAsteroids);
 
-        for (int i = 0; i < numAsteroids; i++) {
-            Asteroid newAsteroid = new Asteroid(asteroids);
-            asteroids.add(newAsteroid);
+            for (int i = 0; i < numAsteroids; i++) {
+                Asteroid newAsteroid = new Asteroid(asteroids);
+                asteroids.add(newAsteroid);
+            }
         }
+        // Thread that continually updates the Universe
+        new Thread() {
+            public void run() {
+                while(true) { 
+                    try {
+                        sleep(SpaceRangers.DELAY); // delay for the whole universe, wow!
+                    } catch (InterruptedException e) {}
+                    data = dp.compress(spaceship, ammunition, asteroids);
+                    // System.out.println(data);
+                    SpaceRangers.player.writeToServer(data);
+                    repaint(); 
+                }
+            }
+        }.start();
     }
 
     protected void paintComponent(Graphics g) {
