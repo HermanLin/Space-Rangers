@@ -71,7 +71,7 @@ class DataProcessor {
      * @return a Data object containing the player ship, projectiles,
      *         and asteroids
      */
-    public Data decompress(String data) {
+    public Data decompressAll(String data) {
         // each set of data is separated by a special "SEP " element
         String[] sets = data.split("SEP ");
         
@@ -118,6 +118,51 @@ class DataProcessor {
         return new Data(playerShip, projectiles, asteroids);
     }
 
+    /**
+     * This decompression method is used only when a player needs
+     * only the ship data and projectile data of other players.
+     * All players that are already in the game keep track of the
+     * asteroids in the universe and update their asteroids 
+     * independently. Since all players have the same asteroid 
+     * state as all others when they join, that set of data is
+     * unneeded when updating others and themselves.
+     * 
+     * @param data the String containing all necessary game state 
+     *             values from a player
+     * @return a Data object containing only the player's ship and
+     *         associated projectiles
+     */
+    public Data decompress(String data) {
+        // each set of data is separated by a special "SEP " element
+        String[] sets = data.split("SEP ");
+        
+        // each set of data is also internally separated by a space
+        String[] playerData = sets[0].split(" ");
+        String[] projectileData = sets[1].split(" ");
+
+        /* extract the data from each String array into Data */
+        int red = Integer.parseInt(playerData[0]);
+        int green = Integer.parseInt(playerData[1]);
+        int blue = Integer.parseInt(playerData[2]); 
+        Color color = new Color(red, green, blue);
+        
+        // extract player specific data
+        double playerX = Double.parseDouble(playerData[3]);
+        double playerY = Double.parseDouble(playerData[4]);
+        double playerFacing = Double.parseDouble(playerData[5]);
+        Ship playerShip = new Ship(color, playerX, playerY, playerFacing);
+        
+        // extract projectile specific data into an ArrayList
+        ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
+        for (int i = 0; i < projectileData.length; i += 3) {
+            double posX = Double.parseDouble(projectileData[i]);
+            double posY = Double.parseDouble(projectileData[i+1]);
+            double dir = Double.parseDouble(projectileData[i+2]);
+            projectiles.add(new Projectile(color,dir, posX, posY));
+        }
+
+        return new Data(playerShip, projectiles);
+    }
 /*    public static void main(String[] args) {
         Ship test = new Ship(Color.RED);
         System.out.println(test);

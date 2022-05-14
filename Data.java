@@ -19,6 +19,19 @@ public class Data {
     public ArrayList<Asteroid> asteroids;
 
     /**
+     * Creates a new Data object only containing the sending
+     * player's Ship and associated Projectiles.
+     *
+     * @param player the object of the player sending data
+     * @param projectiles the object of the projectiles from the
+     *                    player sending data
+     */
+    public Data(Ship player, ArrayList<Projectile> projectiles) {
+        this.player = player;
+        this.projectiles = projectiles;
+    }
+    
+    /**
      * Creates a new Data object containing the sending player's
      * Ship, associated Projectiles, and current Asteroids
      * iteration. The asteroids ArrayList is only used when a
@@ -38,11 +51,12 @@ public class Data {
         this.asteroids = asteroids;
     }
 
-    public String toString() {
+/*    public String toString() {
         String data = "";
         data += player.toString() + "\n";
         for (Projectile p : projectiles) data += p.toString() + "\n";
         for (Asteroid a : asteroids) data += a.toString() + "\n";
         return data.trim();
     }
+*/
 }
