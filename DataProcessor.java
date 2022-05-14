@@ -115,6 +115,40 @@ class DataProcessor {
     }
 
     /**
+     * This decompression method is used only when a new player 
+     * needs the current state of all the asteroids in the game.
+     * The new player will receive data regarding the rest of the
+     * players when it fully joins the universe. 
+     *
+     * @param data the String containing all necessary game state
+     *             values from a player
+     * @return a Data object containing only the asteroids 
+     *         present in the universe
+     */
+    public Data decompressAsteroids(String data) {
+        // each set of data is separated by a special "SEP " element
+        String[] sets = data.split("SEP ");
+        // extract only the asteroids data
+        String[] asteroidData = sets[2].split(" ");
+
+        // extract asteroid specific data into an ArrayList
+        ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
+        for (int i = 0; i < asteroidData.length; i += 7) {
+            int type = Integer.parseInt(asteroidData[i]);
+            int scale = Integer.parseInt(asteroidData[i+1]);
+            double posX = Double.parseDouble(asteroidData[i+2]);
+            double posY = Double.parseDouble(asteroidData[i+3]);
+            double velX = Double.parseDouble(asteroidData[i+4]);
+            double velY = Double.parseDouble(asteroidData[i+5]);
+            double dir = Double.parseDouble(asteroidData[i+6]);
+            asteroids.add(new Asteroid(posX, posY, dir, velX, velY,
+                                       type, scale, asteroids));
+        }
+
+        return new Data(asteroids);
+    }
+
+    /**
      * This decompression method is used only when a player needs
      * only the ship data and projectile data of other players.
      * All players that are already in the game keep track of the
@@ -128,7 +162,7 @@ class DataProcessor {
      * @return a Data object containing only the player's ship and
      *         associated projectiles
      */
-    public Data decompress(String data) {
+    public Data decompressUpdate(String data) {
         // each set of data is separated by a special "SEP " element
         String[] sets = data.split("SEP ");
         
