@@ -40,7 +40,7 @@ public class Data {
 
     public String toString() {
         String data = "";
-        data += player.toString();
+        data += player.toString() + "\n";
         for (Projectile p : projectiles) data += p.toString() + "\n";
         for (Asteroid a : asteroids) data += a.toString() + "\n";
         return data.trim();
