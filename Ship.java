@@ -53,11 +53,12 @@ public class Ship extends Polygon {
      * @param posx the x coordinate of the Ship
      * @param posy the y coordinate of the Ship
      */
-    Ship(Color color, double posx, double posy) {
+    Ship(Color color, double posx, double posy, double deg) {
         super(xcoords, ycoords, nVertex);
         this.color = color; 
         positionx = posx;
         positiony = posy;
+        facing = deg;
 
         computeCentroid();
         computeTranslatedCentroid();
@@ -185,5 +186,12 @@ public class Ship extends Polygon {
         else if (positionx > SpaceRangers.SCREEN_WIDTH) { positionx = 0; }
         if (positiony < 0) { positiony = SpaceRangers.SCREEN_HEIGHT; }
         else if (positiony > SpaceRangers.SCREEN_HEIGHT) { positiony = 0; }
+    }
+
+    public String toString() {
+        return "Ship | Color: " + color + 
+               ", X: " + positionx + ", Y: " + positiony +
+               ", cX: " + centroidx + ", cY: " + centroidy +
+               ", Facing: " + facing + " degrees";
     }
 }
