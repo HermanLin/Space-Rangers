@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-import java.io.ByteArrayOutputStream;
+// import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
 import java.awt.Color;
 
@@ -20,10 +20,10 @@ import java.awt.Color;
  * alive will be processed
  *
  * The full representation of the return byte array in bytes:
- * 4 + 8 + 8 + 8 +                              // player 
+ * 4 + 4 + 4 + 8 + 8 + 8 +                      // player 
  * (n * (8 + 8 + 8)) +                          // projectiles
  * (m * (4 + 4 + 8 + 8 + 8 + 8 + 8 + 8 + 8))    // asteroids
- * = 28 + 24n + 64m bytes
+ * = 36 + 4 + 24n + 4 + 64m bytes
  * 
  * @author Herman Lin
  * @author Devin Zhu
@@ -31,10 +31,10 @@ import java.awt.Color;
 
 class DataProcessor {
 
-    ByteArrayOutputStream compiler;
+    // ByteArrayOutputStream compiler;
 
     DataProcessor() {
-        compiler = new ByteArrayOutputStream();
+        // compiler = new ByteArrayOutputStream();
     }
 
     /**
@@ -50,59 +50,79 @@ class DataProcessor {
     public byte[] compress(Ship player, 
                            ArrayList<Projectile> projectiles,
                            ArrayList<Asteroid> asteroids) {
-        // get color and put into buffer
-        compiler.write(player.getColor().getRGB());
         // get player properties and put into buffer
-        ByteBuffer playerData = ByteBuffer.allocate(28);
+        ByteBuffer playerData = ByteBuffer.allocate(36);
+        playerData.putInt(player.getColor().getRed());
+        playerData.putInt(player.getColor().getGreen());
+        playerData.putInt(player.getColor().getBlue());
         playerData.putDouble(player.getPositionX());
         playerData.putDouble(player.getPositionY());
         playerData.putDouble(player.getFacing());
-        compiler.write(playerData.array(), 0, 28);
 
         // indicator for how many projectiles there are
         // and therefore how many bytes to read all projectiles
-        compiler.write(projectiles.size());
+        System.out.println("Num Projectiles: " + projectiles.size());
+        // compiler.write(projectiles.size());
+        ByteBuffer projectilesData = ByteBuffer.allocate(24 * projectiles.size() + 4);
+        projectilesData.putInt(projectiles.size());
         // get projectile properties and put into buffer
         for (Projectile p : projectiles) {
-            ByteBuffer projData = ByteBuffer.allocate(24);
-            projData.putDouble(p.getPositionX());
-            projData.putDouble(p.getPositionY());
-            projData.putDouble(p.getDirection());
-            compiler.write(projData.array(), 0, 24);
+            // ByteBuffer projData = ByteBuffer.allocate(24);
+            // projData.putDouble(p.getPositionX());
+            // projData.putDouble(p.getPositionY());
+            // projData.putDouble(p.getDirection());
+            // compiler.write(projData.array(), 0, 24);
+            projectilesData.putDouble(p.getPositionX());
+            projectilesData.putDouble(p.getPositionY());
+            projectilesData.putDouble(p.getDirection());
         }
         
-        /* the rest of the byte array will contain data
-           only about the asteroids */
+        System.out.println("Num Asteroids: " + asteroids.size());
+        // compiler.write(asteroids.size());
+        ByteBuffer asteroidsData = ByteBuffer.allocate(64 * asteroids.size() + 4);
+        asteroidsData.putInt(asteroids.size());
         // get asteroid properties and put into buffer
         for (Asteroid a : asteroids) {
-            ByteBuffer astData = ByteBuffer.allocate(64);
-            astData.putInt(a.getType());
-            astData.putInt(a.getScale());
-            astData.putDouble(a.getPositionX());
-            astData.putDouble(a.getPositionY());
-            astData.putDouble(a.getCentroidX());
-            astData.putDouble(a.getCentroidY());
-            astData.putDouble(a.getDirection()); 
-            astData.putDouble(a.getVelocityX());
-            astData.putDouble(a.getVelocityY());
-            compiler.write(astData.array(), 0, 64);          
+            // ByteBuffer astData = ByteBuffer.allocate(64);
+            // astData.putInt(a.getType());
+            // astData.putInt(a.getScale());
+            // astData.putDouble(a.getPositionX());
+            // astData.putDouble(a.getPositionY());
+            // astData.putDouble(a.getCentroidX());
+            // astData.putDouble(a.getCentroidY());
+            // astData.putDouble(a.getDirection()); 
+            // astData.putDouble(a.getVelocityX());
+            // astData.putDouble(a.getVelocityY());
+            // compiler.write(astData.array(), 0, 64);  
+            asteroidsData.putInt(a.getType());
+            asteroidsData.putInt(a.getScale());
+            asteroidsData.putDouble(a.getPositionX());
+            asteroidsData.putDouble(a.getPositionY());
+            asteroidsData.putDouble(a.getCentroidX());
+            asteroidsData.putDouble(a.getCentroidY());
+            asteroidsData.putDouble(a.getDirection()); 
+            asteroidsData.putDouble(a.getVelocityX());
+            asteroidsData.putDouble(a.getVelocityY());
         }
         
-        byte[] compressed = compiler.toByteArray();
-        try { compiler.flush(); } // reset compiler
-        catch (Exception e) {
-            System.out.println("Error: cannot flush data compiler");
-        }
-        return compressed;
+        // byte[] compressed = compiler.toByteArray();
+        // try { compiler.flush(); } // reset compiler
+        // catch (Exception e) {
+        //     System.out.println("Error: cannot flush data compiler");
+        // }
+        ByteBuffer compressed = ByteBuffer.allocate(playerData.capacity() + 
+                                                    projectilesData.capacity() +
+                                                    asteroidsData.capacity());
+        compressed.put(playerData);
+        compressed.put(projectilesData);
+        compressed.put(asteroidsData);
+        return compressed.array();
     }   
 
     public Data decompress(byte[] data) {
         // A ByteBuffer for traversing the data byte array
         // Everytime we grab a value, we increment the position
         ByteBuffer store = ByteBuffer.wrap(data);
-        System.out.println(store.array());
-        System.out.println(store.get(0) + store.get(1) + store.get(2) + store.get(3));
-        System.out.println("=====");
 
         // variables for holding data to be passed into Data
         Ship playerShip;
@@ -110,41 +130,34 @@ class DataProcessor {
         ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
 
         // first 28 bytes contain data about the player
-        Color playerColor = new Color(store.getInt()); 
-        double playerPosX = store.getDouble(4);
-        double playerPosY = store.getDouble(12);
-        double playerFace = store.getDouble(20);
+        Color playerColor = new Color(store.getInt(),   
+                                      store.getInt(),  
+                                      store.getInt()); 
+        double playerPosX = store.getDouble();        
+        double playerPosY = store.getDouble();        
+        double playerFace = store.getDouble();
 
         playerShip = new Ship(playerColor, playerPosX, playerPosY, playerFace);
         System.out.println(playerShip);
 /*
-        // next projectileBytes bytes will contain all 
-        // information about the projectiles
-        int projectileBytes = store.getInt(28) * 24;
-        for (int i = 28; i < projectileBytes; i += 8) {
-            double pposx = store.get(i);
-            double pposy = store.get(i + 8);
-            double pdir = store.get(i + 16);
+        // next n bytes contain information about the projectiles
+        // System.out.println("Position: " + store.position());
+        int numProjectiles = store.get();
+        store.position(store.position() + 3);
+        // System.out.println("Position: " + store.position());
+        System.out.println(numProjectiles);
+        System.out.println("=====");
+        for (int i = 0; i < numProjectiles; i++) {
+            // System.out.println("Projectile " + i);
+            double pposx = store.getDouble();
+            double pposy = store.getDouble();
+            double pdir = store.getDouble();
+            // System.out.println("Position: " + store.position());
             projectiles.add(new Projectile(playerColor, pposx, pposy, pdir));
         }
-
-        // the rest of the ByteBuffer onlny contains
-        // information about the asteroids
-        for (int i = 28 + projectileBytes; i < store.limit(); i += 64) {
-            int atype = store.get(i);
-            int ascale = store.get(i + 4);
-            double aposx = store.get(i + 12);
-            double aposy = store.get(i + 20);
-            double acenx = store.get(i + 28);
-            double aceny = store.get(i + 36);
-            double adir = store.get(i + 44);
-            double avelx = store.get(i + 52);
-            double avely = store.get(i + 60);
-            asteroids.add(
-                new Asteroid(aposx, aposy, adir, avelx, avely, atype, ascale,
-                             asteroids));
-        }
 */
+        // next m bytes contain information about the projectiles
+        
         // return a Data object containing all the data values
         return new Data(playerShip, projectiles, asteroids);
     }
@@ -173,7 +186,6 @@ class DataProcessor {
         DataProcessor dp = new DataProcessor();
         byte[] woohoo = dp.compress(test, testp, testa);
         System.out.println(woohoo);
-        System.out.println(woohoo[0]+woohoo[1]+woohoo[2]+woohoo[3]);
         System.out.println("=====");
         
         Data result = dp.decompress(woohoo);
