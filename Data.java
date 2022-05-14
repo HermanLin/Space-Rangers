@@ -19,11 +19,22 @@ public class Data {
     public ArrayList<Asteroid> asteroids;
 
     /**
+     * Creates a new Data object only containing the asteroids
+     * of the current game state
+     *
+     * @param asteroids the objects of the asteroids from the
+     *                  player sending data
+     */
+    public Data(ArrayList<Asteroid> asteroids) {
+        this.asteroids = asteroids;
+    }
+
+    /**
      * Creates a new Data object only containing the sending
      * player's Ship and associated Projectiles.
      *
      * @param player the object of the player sending data
-     * @param projectiles the object of the projectiles from the
+     * @param projectiles the objects of the projectiles from the
      *                    player sending data
      */
     public Data(Ship player, ArrayList<Projectile> projectiles) {
@@ -34,13 +45,12 @@ public class Data {
     /**
      * Creates a new Data object containing the sending player's
      * Ship, associated Projectiles, and current Asteroids
-     * iteration. The asteroids ArrayList is only used when a
-     * new Player joins the game in order to update its own state.
+     * iteration. 
      * 
      * @param player the object of the player sending data
-     * @param projectiles the object of the projectiles from the
+     * @param projectiles the objects of the projectiles from the
      *                    player sending data
-     * @param asteroids the object of the current asteroids 
+     * @param asteroids the objects of the current asteroids 
      *                  present in the universe
      */
     public Data(Ship player, 
