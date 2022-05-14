@@ -210,18 +210,6 @@ class Asteroid extends Polygon {
     }
 
     /**
-     * Represent the Asteroid through its x/y coordinates
-     */
-    public String toString() {
-        String ret = "X: [ ";
-        for (int x : this.xpoints) { ret += x + " "; }
-        ret += "], Y: [ ";
-        for (int y : this.ypoints) { ret += y + " "; }
-        ret += "]";
-        return ret;
-    }
-
-    /**
      * Move the Asteroid according to the velocity and direction values
      */
     public void move() {
@@ -232,5 +220,12 @@ class Asteroid extends Polygon {
         else if (positionx > SpaceRangers.SCREEN_WIDTH) { positionx = 0; }
         if (positiony < 0) { positiony = SpaceRangers.SCREEN_HEIGHT; }
         else if (positiony > SpaceRangers.SCREEN_HEIGHT) { positiony = 0; }
+    }
+
+    public String toString() {
+        return "Asteroid | Type: " + type + ", Scale: " + scale +
+               ", X: " + positionx + ", Y: " + positiony + 
+               ", cX: " + centroidx + ", cY: " + centroidy +
+               ", Direction: " + direction + " degrees";
     }
 }
