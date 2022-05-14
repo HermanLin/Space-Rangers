@@ -96,6 +96,7 @@ class Asteroid extends Polygon {
     Asteroid(double posX, double posY, double dir, double velX, double velY, 
              int type, int scale, ArrayList<Asteroid> asteroids) {
         super();
+        this.type = type;
         this.npoints = nVertex[type];
         positionx = posX; positiony = posY;
         direction = dir; 
@@ -222,10 +223,17 @@ class Asteroid extends Polygon {
         else if (positiony > SpaceRangers.SCREEN_HEIGHT) { positiony = 0; }
     }
 
+    public String dataString() {
+        return type + " " + scale +
+               " " + positionx + " " + positiony + 
+               " " + velocityx + " " + velocityy +
+               " " + direction + " ";
+    }
+
     public String toString() {
         return "Asteroid | Type: " + type + ", Scale: " + scale +
                ", X: " + positionx + ", Y: " + positiony + 
-               ", cX: " + centroidx + ", cY: " + centroidy +
+               ", vX: " + velocityx + ", vY: " + velocityy +
                ", Direction: " + direction + " degrees";
     }
 }

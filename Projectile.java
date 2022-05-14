@@ -69,6 +69,10 @@ public class Projectile extends Polygon {
             positiony > SpaceRangers.SCREEN_HEIGHT) { alive = false; }
     }
 
+    public String dataString() {
+        return positionx + " " + positiony + " " + direction + " ";
+    }
+
     public String toString() {
         return "Projectile | X: " + positionx + ", Y: " + positiony +
                ", Direction: " + direction + " degrees";

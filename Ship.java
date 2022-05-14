@@ -188,6 +188,11 @@ public class Ship extends Polygon {
         else if (positiony > SpaceRangers.SCREEN_HEIGHT) { positiony = 0; }
     }
 
+    public String dataString() {
+        return color.getRed() + " " + color.getGreen() + " " + color.getBlue() +
+               " " + positionx + " " + positiony + " " + facing + " ";
+    }
+
     public String toString() {
         return "Ship | Color: " + color + 
                ", X: " + positionx + ", Y: " + positiony +
