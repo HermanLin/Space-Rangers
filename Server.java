@@ -30,11 +30,11 @@ public class Server {
         players.remove(player);
     }
 
-    public static void writeToOtherPlayers(byte[] data, Connection src) {
+    public static void writeToOtherPlayers(String data, Connection src) {
         for (Connection p : players) {
             if (p.equals(src)) { continue; }
             else {
-                try { p.sout.write(data, 0, data.length); }
+                try { p.sout.writeUTF(data)); }
                 catch (IOException e) {}
             }
         }
@@ -72,14 +72,6 @@ class Connection extends Thread {
             socket = newPlayerSocket;
             sin = new DataInputStream(socket.getInputStream());
             sout = new DataOutputStream(socket.getOutputStream());
-
-            // if (!Server.isEmpty()) {
-            //     Connection firstPlayer = Server.getFirst();
-            //     // directly ask the first Player for Universe data
-
-            //     // send update data to the new Player
-
-            // }
         } catch (IOException e) {}
     }
 
@@ -87,9 +79,7 @@ class Connection extends Thread {
     public void run() {
         try {
             try {
-                int length = sin.available();
-                byte[] data = new byte[length];
-                sin.readFully(data);
+                String data = sin.readUTF();
                 Server.writeToOtherPlayers(data, this);
             } catch (Exception e) {
             } finally {

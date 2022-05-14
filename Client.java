@@ -36,21 +36,19 @@ public class Client {
     }
 
     //read data from server
-    public byte[] readFromServer() {
+    public String readFromServer() {
         try {
-            int length = sin.available();
-            byte[] data = new byte[length];
-            sin.readFully(data);
+            String data = sin.readUTF();
             return data;
 
         } catch (Exception e) {}
-        return null;
+        return "";
     }
 
     // write the ship object to the server
-    public void writeToServer(byte[] data) {
+    public void writeToServer(String data) {
         try {
-            sout.write(data, 0, data.length);
+            sout.writeUTF(data);
         } catch (IOException e) {
 
         }
