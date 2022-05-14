@@ -26,11 +26,7 @@ import java.awt.Color;
 
 class DataProcessor {
 
-    // ByteArrayOutputStream compiler;
-
-    DataProcessor() {
-        // compiler = new ByteArrayOutputStream();
-    }
+    DataProcessor() {}
 
     /**
      * This will compress the necessary values from a game state
