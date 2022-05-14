@@ -1,18 +1,15 @@
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * The sole purpose of this class is to provide an easy
- * way to transfer data to and from the server and player.
- * It is passed through the network sockets using the
- * InputStream and OutputStream classes. The fields of this 
- * class represents all necessary data for gameplay.
+ * This class holds data that has been processed by
+ * the DataProcessor. It allows for primarily the 
+ * player to easily reference data necessary for 
+ * updating their game state
  *
- * @author Herman Lin
- * @author Devin Zhu
+ * @see DataProcessor
  */
 
-class Data {
+public class Data {
 
     // player
     public Ship player;
@@ -39,5 +36,13 @@ class Data {
         this.player = player;
         this.projectiles = projectiles;
         this.asteroids = asteroids;
+    }
+
+    public String toString() {
+        String data = "";
+        data += player.toString();
+        for (Projectile p : projectiles) data += p.toString() + "\n";
+        for (Asteroid a : asteroids) data += a.toString() + "\n";
+        return data.trim();
     }
 }
