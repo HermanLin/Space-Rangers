@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class Data {
 
     // player
-    public Ship player;
+    public Ship spaceship;
     // player's projectiles
     public ArrayList<Projectile> projectiles;
     // list of asteroids
@@ -33,12 +33,12 @@ public class Data {
      * Creates a new Data object only containing the sending
      * player's Ship and associated Projectiles.
      *
-     * @param player the object of the player sending data
+     * @param spaceship the object of the player sending data
      * @param projectiles the objects of the projectiles from the
      *                    player sending data
      */
-    public Data(Ship player, ArrayList<Projectile> projectiles) {
-        this.player = player;
+    public Data(Ship spaceship, ArrayList<Projectile> projectiles) {
+        this.spaceship = spaceship;
         this.projectiles = projectiles;
     }
     
@@ -53,10 +53,10 @@ public class Data {
      * @param asteroids the objects of the current asteroids 
      *                  present in the universe
      */
-    public Data(Ship player, 
+    public Data(Ship spaceship, 
                 ArrayList<Projectile> projectiles,
                 ArrayList<Asteroid> asteroids) {
-        this.player = player;
+        this.spaceship = spaceship;
         this.projectiles = projectiles;
         this.asteroids = asteroids;
     }
