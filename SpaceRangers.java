@@ -19,7 +19,7 @@ public class SpaceRangers extends JFrame {
 
     public static final int SCREEN_WIDTH = 800;
     public static final int SCREEN_HEIGHT = 800;
-    public static final int DELAY = 200;
+    public static final int DELAY = 10;
     private Universe universe;
 
     public static boolean keyHeld = false;
@@ -142,9 +142,7 @@ class Universe extends JPanel {
                         update = SpaceRangers.player.readFromServer();
                     }
                     if (!update.isEmpty()) {
-                        // System.out.println(update);
                         Data data = dp.decompressUpdate(update);
-                        // System.out.println(data.spaceship);
                         try {
                             updates.put(data);
                         } catch (Exception e) {}
@@ -235,6 +233,18 @@ class Universe extends JPanel {
                     g2d.setTransform(identity);
                     g2d.translate(p.getPositionX(), p.getPositionY());
                     g2d.drawPolygon(p);
+                }
+            }
+
+            for (Asteroid a : asteroids) {
+                if (a.isAlive()) {
+                    // check if any projectile intersects with Asteroid a
+                    for (Projectile p : player2.projectiles) {
+                        if (a.collidesWith(p)) {
+                            a.destroy();
+                            p.destroy();
+                        }
+                    }
                 }
             }
         } //else { System.out.println("No player2"); }

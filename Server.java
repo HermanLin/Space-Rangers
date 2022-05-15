@@ -89,6 +89,7 @@ class Connection extends Thread {
                 }
             } catch (Exception e) {
             } finally {
+                sout.println("DISCONNECT");
                 socket.close();
                 Server.removePlayer(this);
             }
