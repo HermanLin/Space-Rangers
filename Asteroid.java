@@ -6,8 +6,7 @@ import java.util.ArrayList;
 /**
  * The Asteroid class contains data on a specific Asteroid within the
  * Universe. The class also holds an ArrayList containing all the 
- * Asteroids within the Universe, which allows for adding smaller
- * Asteroids to the Universe when a larger one is destroyed.
+ * Asteroids within the Universe.
  * 
  * @author Herman Lin
  * @author Devin Zhu
