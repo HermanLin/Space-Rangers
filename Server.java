@@ -19,7 +19,6 @@ public class Server {
     private static ArrayList<Connection> players;
 
     public static boolean isEmpty() { return players.isEmpty(); }
-    public static Connection getFirst() { return players.get(0); }
 
     /**
      * Removes a player from the list of connections
