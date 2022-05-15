@@ -38,13 +38,18 @@ public class StartUp extends JFrame {
 
                 if (Pattern.matches(IP_ADDRESS, serverAddr)) {
                     Boolean connected = player.connectTo(serverAddr);
-                    if (connected) { 
+                    String msg = player.readFromServer();
+                    int playerCount = Integer.parseInt(msg);
+                    if (connected && playerCount < 2) { 
                         closeWindow();
                         new SpaceRangers(player, playerColor); 
                     } else {
+                        try { player.socket.close(); }
+                        catch (Exception ex) {}
                         JOptionPane.showMessageDialog(
                             null,
-                            "Unable to connect to the server: " + serverAddr,
+                            "Unable to connect to the server: " + serverAddr +
+                            ". Server may be full",
                             "Space Rangers Error",
                             JOptionPane.INFORMATION_MESSAGE);
                     }

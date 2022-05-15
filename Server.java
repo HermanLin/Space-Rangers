@@ -50,6 +50,7 @@ public class Server {
             while(true) {
                 Socket playerSocket = ss.accept();
                 Connection playerConn = new Connection(playerSocket);
+                playerConn.sout.println(players.size());
                 if (players.isEmpty()) playerConn.sout.println("");
                 playerConn.start();
                 players.add(playerConn);
