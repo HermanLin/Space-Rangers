@@ -35,7 +35,7 @@ public class Server {
             if (p.equals(src)) { continue; }
             else {
                 // try { p.sout.writeUTF(data); }
-                try { p.sout.print(data); }
+                try { p.sout.println(data); }
                 catch (Exception e) {}
             }
         }
@@ -50,6 +50,7 @@ public class Server {
             while(true) {
                 Socket playerSocket = ss.accept();
                 Connection playerConn = new Connection(playerSocket);
+                if (players.isEmpty()) playerConn.sout.println("");
                 playerConn.start();
                 players.add(playerConn);
             }
@@ -84,14 +85,10 @@ class Connection extends Thread {
             try {
                 while(true) {
                     String data = sin.nextLine();
-                    // String data = sin.readUTF();
-                    // Server.writeToOtherPlayers(data, this);
-                    System.out.println(data);
-                    System.out.println("=====");
+                    Server.writeToOtherPlayers(data, this);
                 }
             } catch (Exception e) {
             } finally {
-                System.out.println("Closing");
                 socket.close();
                 Server.removePlayer(this);
             }

@@ -4,6 +4,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.TimeUnit;
 
 /**
  * The SpaceRangers class is the driver class for the entire game.
@@ -18,7 +19,7 @@ public class SpaceRangers extends JFrame {
 
     public static final int SCREEN_WIDTH = 800;
     public static final int SCREEN_HEIGHT = 800;
-    public static final int DELAY = 10;
+    public static final int DELAY = 200;
     private Universe universe;
 
     public static boolean keyHeld = false;
@@ -91,36 +92,76 @@ class Universe extends JPanel {
     ArrayList<Asteroid> asteroids;
 
     // a queue that is continually updated with Data from other Players
-    SynchronousQueue<Data> updates = new SynchronousQueue<Data>();
+    SynchronousQueue<Data> updates;
     // DataProcessor compresses/decompresses updates from the Server
-    DataProcessor dp = new DataProcessor();
+    DataProcessor dp;
     String data = "";
 
     Universe(Color color) {
         super();
         setBackground(Color.BLACK);
+
+        updates = new SynchronousQueue<Data>();
+        dp = new DataProcessor();
+
         spaceship = new Ship(color);
         ammunition = new ArrayList<Projectile>();
 
-        // String update = SpaceRangers.player.readFromServer();
         String update = "";
+        // System.out.println("Checking data");
+        if (SpaceRangers.player.sin.hasNextLine()) {
+            // System.out.println("Receiving new Data");
+            update = SpaceRangers.player.readFromServer();
+        }
+        // System.out.println("Finished Checking");
         if (update.isEmpty()) {
+            // System.out.println("new data empty");
             asteroids = new ArrayList<Asteroid>(numAsteroids);
 
             for (int i = 0; i < numAsteroids; i++) {
                 Asteroid newAsteroid = new Asteroid(asteroids);
                 asteroids.add(newAsteroid);
             }
+        } else {
+            // grab the current asteroids state
+            Data data = dp.decompressAsteroids(update);
+            asteroids = data.asteroids;
         }
-        // Thread that continually updates the Universe
+
+        // thread that continually reads from the Server
         new Thread() {
             public void run() {
+                DataProcessor dp = new DataProcessor();
+                String update = "";
+                while(true) {
+                    try {
+                        sleep(SpaceRangers.DELAY);
+                    } catch (InterruptedException e) {}
+                    // read from the server
+                    if (SpaceRangers.player.sin.hasNextLine()) {
+                        update = SpaceRangers.player.readFromServer();
+                    }
+                    if (!update.isEmpty()) {
+                        // System.out.println(update);
+                        Data data = dp.decompressUpdate(update);
+                        // System.out.println(data.spaceship);
+                        try {
+                            updates.put(data);
+                        } catch (Exception e) {}
+                    }
+                }
+            }
+        }.start();
+
+        // thread that continually updates the Universe
+        new Thread() {
+            public void run() {
+                DataProcessor dp = new DataProcessor();
                 while(true) { 
                     try {
                         sleep(SpaceRangers.DELAY); // delay for the whole universe, wow!
                     } catch (InterruptedException e) {}
                     data = dp.compress(spaceship, ammunition, asteroids);
-                    // System.out.println(data);
                     SpaceRangers.player.writeToServer(data);
                     repaint(); 
                 }
@@ -133,6 +174,14 @@ class Universe extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         // Identity transformation matrix for resetting g2d
         AffineTransform identity = new AffineTransform();
+
+        // poll the updates queue for another player's data
+        Data player2 = null;
+        try {
+            // System.out.println("Polling Queue");
+            player2 = updates.poll(SpaceRangers.DELAY, TimeUnit.MILLISECONDS);
+            // player2 = updates.poll();
+        } catch (Exception e) {}
 
         // reset the graphics
         g2d.setTransform(identity);
@@ -168,6 +217,27 @@ class Universe extends JPanel {
                 g2d.drawPolygon(p);
             } 
         }
+
+        // draw spaceship2 if present
+        if (player2 != null) {
+            g2d.setTransform(identity);
+            g2d.setColor(player2.spaceship.getColor());
+            g2d.translate(player2.spaceship.getPositionX(),
+                          player2.spaceship.getPositionY());
+            g2d.rotate(Math.toRadians(player2.spaceship.getFacing()),
+                       player2.spaceship.getCentroidX(),
+                       player2.spaceship.getCentroidY());
+            g2d.drawPolygon(player2.spaceship.getShip());
+
+            for (Projectile p : player2.projectiles) {
+                p.move();
+                if (p.isAlive()) {
+                    g2d.setTransform(identity);
+                    g2d.translate(p.getPositionX(), p.getPositionY());
+                    g2d.drawPolygon(p);
+                }
+            }
+        } //else { System.out.println("No player2"); }
 
         g2d.setColor(Color.WHITE);
         // move and update asteroids within the universe
