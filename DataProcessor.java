@@ -47,10 +47,12 @@ class DataProcessor {
         String projectileData = "";
         for (Projectile p : projectiles) 
             projectileData += p.dataString();
+        if (projectileData.isEmpty()) projectileData = "NONE ";
         // get all asteroid properties and put into one string
         String asteroidData = "";
         for (Asteroid a : asteroids) 
             asteroidData += a.dataString();
+        if (asteroidData.isEmpty()) asteroidData = "NONE ";
 
         // combine all the data into a String, separating each
         // data set with a "SEP "
@@ -90,25 +92,29 @@ class DataProcessor {
         
         // extract projectile specific data into an ArrayList
         ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
-        for (int i = 0; i < projectileData.length; i += 3) {
-            double posX = Double.parseDouble(projectileData[i]);
-            double posY = Double.parseDouble(projectileData[i+1]);
-            double dir = Double.parseDouble(projectileData[i+2]);
-            projectiles.add(new Projectile(color,dir, posX, posY));
+        if (projectileData[0].compareTo("NONE") != 0) {
+            for (int i = 0; i < projectileData.length; i += 3) {
+                double posX = Double.parseDouble(projectileData[i]);
+                double posY = Double.parseDouble(projectileData[i+1]);
+                double dir = Double.parseDouble(projectileData[i+2]);
+                projectiles.add(new Projectile(color,dir, posX, posY));
+            }
         }
 
         // extract asteroid specific data into an ArrayList
         ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
-        for (int i = 0; i < asteroidData.length; i += 7) {
-            int type = Integer.parseInt(asteroidData[i]);
-            int scale = Integer.parseInt(asteroidData[i+1]);
-            double posX = Double.parseDouble(asteroidData[i+2]);
-            double posY = Double.parseDouble(asteroidData[i+3]);
-            double velX = Double.parseDouble(asteroidData[i+4]);
-            double velY = Double.parseDouble(asteroidData[i+5]);
-            double dir = Double.parseDouble(asteroidData[i+6]);
-            asteroids.add(new Asteroid(posX, posY, dir, velX, velY,
-                                       type, scale, asteroids));
+        if (asteroidData[0].compareTo("NONE") != 0) {
+            for (int i = 0; i < asteroidData.length; i += 7) {
+                int type = Integer.parseInt(asteroidData[i]);
+                int scale = Integer.parseInt(asteroidData[i+1]);
+                double posX = Double.parseDouble(asteroidData[i+2]);
+                double posY = Double.parseDouble(asteroidData[i+3]);
+                double velX = Double.parseDouble(asteroidData[i+4]);
+                double velY = Double.parseDouble(asteroidData[i+5]);
+                double dir = Double.parseDouble(asteroidData[i+6]);
+                asteroids.add(new Asteroid(posX, posY, dir, velX, velY,
+                                        type, scale, asteroids));
+            }
         }
 
         return new Data(playerShip, projectiles, asteroids);
@@ -133,16 +139,19 @@ class DataProcessor {
 
         // extract asteroid specific data into an ArrayList
         ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
-        for (int i = 0; i < asteroidData.length; i += 7) {
-            int type = Integer.parseInt(asteroidData[i]);
-            int scale = Integer.parseInt(asteroidData[i+1]);
-            double posX = Double.parseDouble(asteroidData[i+2]);
-            double posY = Double.parseDouble(asteroidData[i+3]);
-            double velX = Double.parseDouble(asteroidData[i+4]);
-            double velY = Double.parseDouble(asteroidData[i+5]);
-            double dir = Double.parseDouble(asteroidData[i+6]);
-            asteroids.add(new Asteroid(posX, posY, dir, velX, velY,
-                                       type, scale, asteroids));
+
+        if (asteroidData[0].compareTo("NONE") != 0) {
+            for (int i = 0; i < asteroidData.length; i += 7) {
+                int type = Integer.parseInt(asteroidData[i]);
+                int scale = Integer.parseInt(asteroidData[i+1]);
+                double posX = Double.parseDouble(asteroidData[i+2]);
+                double posY = Double.parseDouble(asteroidData[i+3]);
+                double velX = Double.parseDouble(asteroidData[i+4]);
+                double velY = Double.parseDouble(asteroidData[i+5]);
+                double dir = Double.parseDouble(asteroidData[i+6]);
+                asteroids.add(new Asteroid(posX, posY, dir, velX, velY,
+                                        type, scale, asteroids));
+            }
         }
 
         return new Data(asteroids);
@@ -184,11 +193,13 @@ class DataProcessor {
         
         // extract projectile specific data into an ArrayList
         ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
-        for (int i = 0; i < projectileData.length; i += 3) {
-            double posX = Double.parseDouble(projectileData[i]);
-            double posY = Double.parseDouble(projectileData[i+1]);
-            double dir = Double.parseDouble(projectileData[i+2]);
-            projectiles.add(new Projectile(color,dir, posX, posY));
+        if (projectileData[0].compareTo("NONE") != 0) {
+            for (int i = 0; i < projectileData.length; i += 3) {
+                double posX = Double.parseDouble(projectileData[i]);
+                double posY = Double.parseDouble(projectileData[i+1]);
+                double dir = Double.parseDouble(projectileData[i+2]);
+                projectiles.add(new Projectile(color,dir, posX, posY));
+            }
         }
 
         return new Data(playerShip, projectiles);
