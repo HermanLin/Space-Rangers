@@ -41,10 +41,12 @@ public class Server {
     }
 
     public static void main(String[] args) {
+        System.out.println("Booting up the server...");
         players = new ArrayList<Connection>();
 
         try {
             ServerSocket ss = new ServerSocket(DEFAULT_PORT);
+            System.out.println("Server started with port " + DEFAULT_PORT);
 
             while(true) {
                 Socket playerSocket = ss.accept();
@@ -55,7 +57,7 @@ public class Server {
                 players.add(playerConn);
             }
         } catch (Exception e) {
-            System.out.println("Could not listen on port " + DEFAULT_PORT);
+            System.out.println("Server could not listen on port " + DEFAULT_PORT);
         }
     }
 }
