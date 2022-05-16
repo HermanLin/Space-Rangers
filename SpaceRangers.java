@@ -85,7 +85,7 @@ public class SpaceRangers extends JFrame {
 
 class Universe extends JPanel {
 
-    final int numAsteroids = 5;
+    final int NUM_ASTEROIDS = 7;
 
     Ship spaceship;
     ArrayList<Projectile> ammunition;
@@ -116,9 +116,9 @@ class Universe extends JPanel {
         // System.out.println("Finished Checking");
         if (update.isEmpty()) {
             // System.out.println("new data empty");
-            asteroids = new ArrayList<Asteroid>(numAsteroids);
+            asteroids = new ArrayList<Asteroid>(NUM_ASTEROIDS);
 
-            for (int i = 0; i < numAsteroids; i++) {
+            for (int i = 0; i < NUM_ASTEROIDS; i++) {
                 Asteroid newAsteroid = new Asteroid(asteroids);
                 asteroids.add(newAsteroid);
             }
