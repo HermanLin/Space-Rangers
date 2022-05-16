@@ -85,6 +85,7 @@ public class SpaceRangers extends JFrame {
 
 class Universe extends JPanel {
 
+    // adjust this number to change how many starting asteroids
     final int NUM_ASTEROIDS = 7;
 
     Ship spaceship;
