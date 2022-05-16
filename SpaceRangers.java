@@ -129,7 +129,7 @@ class Universe extends JPanel {
             asteroids = data.asteroids;
         }
 
-        // thread that continually reads from the Server
+        // thread that continually reads updates from the Server
         new Thread() {
             public void run() {
                 DataProcessor dp = new DataProcessor();
@@ -138,16 +138,32 @@ class Universe extends JPanel {
                     try {
                         sleep(SpaceRangers.DELAY);
                     } catch (InterruptedException e) {}
-                    // read from the server
+                    // check if the server has any data to read
                     if (SpaceRangers.player.sin.hasNextLine()) {
                         update = SpaceRangers.player.readFromServer();
                     }
                     if (!update.isEmpty()) {
+                        // process the update and add to the Queue
                         Data data = dp.decompressUpdate(update);
                         try {
                             updates.put(data);
                         } catch (Exception e) {}
                     }
+                }
+            }
+        }.start();
+
+        // thread that continually writes updates to the Server
+        new Thread() {
+            public void run() {
+                DataProcessor dp = new DataProcessor();
+                while(true) {
+                    try {
+                        sleep(SpaceRangers.DELAY);
+                    } catch (InterruptedException e) {}
+                    // process and send update data
+                    data = dp.compress(spaceship, ammunition, asteroids);
+                    SpaceRangers.player.writeToServer(data);
                 }
             }
         }.start();
@@ -160,8 +176,6 @@ class Universe extends JPanel {
                     try {
                         sleep(SpaceRangers.DELAY); // delay for the whole universe, wow!
                     } catch (InterruptedException e) {}
-                    data = dp.compress(spaceship, ammunition, asteroids);
-                    SpaceRangers.player.writeToServer(data);
                     repaint(); 
                 }
             }
